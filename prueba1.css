@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #b8b8b8;
+}
+
+.parrafo{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    padding: 10px;
+    text-align: left;
+}
+
+header {
+    background-color: #fa0202;
+    color: white;
+    padding: 0.5em 0; /* Ajuste del padding para reducir espacio superior/inferior */
+    text-align: center;
+    position: relative; /* Asegura que los elementos dentro se alineen correctamente */
+}
+
+h1 {
+    font-size: 50px; 
+    font-family: "Times New Roman", serif; 
+    margin-top: -80px; 
+    font-weight: bold; 
+    letter-spacing: 2px; 
+}
+
+h2 {
+    font-size: 30px; 
+    font-family:sans-serif
+
+}
+
+.social-media-list img.social-icon {
+    width: 20px;                /* Cambia el tamaño del ícono */
+    height: 20px;
+    margin-right: 10px;          /* Ajusta el espacio entre el ícono y el texto */
+}
+
+nav {
+    background-color: #8d0303;
+}
+
+nav ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 1em;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    padding: 1em;
+}
+table , td, th {
+	border: 1px solid #595959;
+	border-collapse: collapse;
+}
+td, th {
+	padding: 5px;
+	width: 30px;
+	height: 25px;
+}
+th {
+	background: #f0e6cc;
+}
+.even {
+	background: #fbf8f0;
+}
+.odd {
+	background: #fefcf9;
+}
+
+#calendar { font-family:Arial;font-size:12px;}
+#calendar caption {text-align:left;padding:30px 20px; background-color:#db0c0c;
+color:#fff;font-weight:bold;font-size:medium;}
+#calendar caption div:nth-child(1) {float:left;}
+#calendar caption div:nth-child(2) {float:right;}
+#calendar caption div:nth-child(2) a {cursor:pointer;} 
+#calendar th {background-color:#990000;color:#fff;width:40px;}
+#calendar td {text-align:right;padding:40px 50px;background-color:silver;}
+#calendar .hoy {background-color:red;}
+
+section {
+    margin: 1em 0;
+}
+
+footer {
+    background-color: #fa0202;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    bottom: 0;
+}
+#Logo {
+margin-right: 90%;
+}
