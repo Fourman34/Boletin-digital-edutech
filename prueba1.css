@@ -12,6 +12,17 @@ body {
     text-align: left;
 }
 
+.centered-images {
+    text-align: center;
+}
+
+.centered-images img {
+    display: block;
+    margin: 0 auto;
+}
+
+
+
 header {
     background-color: #fa0202;
     color: white;
