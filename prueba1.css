@@ -5,12 +5,50 @@ body {
     background-color: #b8b8b8;
 }
 
+.parrafo{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    padding: 10px;
+    text-align: left;
+}
+
+.centered-images {
+    text-align: center;
+}
+
+.centered-images img {
+    display: block;
+    margin: 0 auto;
+}
+
+
+
 header {
     background-color: #fa0202;
     color: white;
-    padding: 1em 0;
+    padding: 0.5em 0; /* Ajuste del padding para reducir espacio superior/inferior */
     text-align: center;
-    
+    position: relative; /* Asegura que los elementos dentro se alineen correctamente */
+}
+
+h1 {
+    font-size: 50px; 
+    font-family: "Times New Roman", serif; 
+    margin-top: -80px; 
+    font-weight: bold; 
+    letter-spacing: 2px; 
+}
+
+h2 {
+    font-size: 30px; 
+    font-family:sans-serif
+
+}
+
+.social-media-list img.social-icon {
+    width: 20px;                /* Cambia el tamaño del ícono */
+    height: 20px;
+    margin-right: 10px;          /* Ajusta el espacio entre el ícono y el texto */
 }
 
 nav {
@@ -55,6 +93,16 @@ th {
 .odd {
 	background: #fefcf9;
 }
+
+#calendar { font-family:Arial;font-size:12px;}
+#calendar caption {text-align:left;padding:30px 20px; background-color:#db0c0c;
+color:#fff;font-weight:bold;font-size:medium;}
+#calendar caption div:nth-child(1) {float:left;}
+#calendar caption div:nth-child(2) {float:right;}
+#calendar caption div:nth-child(2) a {cursor:pointer;} 
+#calendar th {background-color:#990000;color:#fff;width:40px;}
+#calendar td {text-align:right;padding:40px 50px;background-color:silver;}
+#calendar .hoy {background-color:red;}
 
 section {
     margin: 1em 0;
