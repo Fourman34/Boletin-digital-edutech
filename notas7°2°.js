@@ -2,10 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabla = document.getElementById("tablaNotas");
     const guardarBtn = document.getElementById("guardar");
 
-    // Cargar notas guardadas del Local Storage
+    const claveNotas = "notas_7_2"; 
+
     cargarNotas();
 
-    // Validar entrada de números entre 1 y 10
     tabla.addEventListener("input", function (event) {
         if (event.target.tagName === "TD" && event.target.isContentEditable) {
             const valor = parseInt(event.target.textContent);
@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Guardar notas en Local Storage
     guardarBtn.addEventListener("click", function () {
         guardarNotas();
         alert("Las notas se han guardado.");
@@ -36,11 +35,12 @@ document.addEventListener("DOMContentLoaded", function () {
             notas.push(filaNotas);
         });
 
-        localStorage.setItem("notas", JSON.stringify(notas));
+        // Guardar notas en localStorage usando la clave específica
+        localStorage.setItem(claveNotas, JSON.stringify(notas));
     }
 
     function cargarNotas() {
-        const notasGuardadas = localStorage.getItem("notas");
+        const notasGuardadas = localStorage.getItem(claveNotas);
 
         if (notasGuardadas) {
             const notas = JSON.parse(notasGuardadas);
