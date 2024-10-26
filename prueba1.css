@@ -1,63 +1,63 @@
+/* General styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #b8b8b8;
+    background-color: #f4f4f4;
 }
 
-.parrafo{
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+h1 {
+    font-size: 50px;
+    font-family: "Times New Roman", serif;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-top: -80px;
+}
+
+h2 {
+    font-size: 30px;
+    font-family: sans-serif;
+}
+
+.parrafo {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 25px;
     padding: 10px;
     text-align: left;
 }
 
-.centered-images {
+/* Header styles */
+header {
+    background-color: #fa0202;
+    color: white;
     text-align: center;
+    padding: 10px 0;
 }
 
-.centered-images img {
+header img {
     display: block;
     margin: 0 auto;
 }
 
-
-
-header {
-    background-color: #fa0202;
-    color: white;
-    padding: 0.5em 0; 
-    text-align: center;
-    position: relative; 
+header h1 {
+    margin: 0;
+    font-size: 36px;
 }
 
-h1 {
-    font-size: 50px; 
-    font-family: "Times New Roman", serif; 
-    margin-top: -80px; 
-    font-weight: bold; 
-    letter-spacing: 2px; 
-}
-
-h2 {
-    font-size: 30px; 
-    font-family:sans-serif
-
-}
-
-.social-media-list img.social-icon {
-    width: 20px;              
-    height: 20px;
-    margin-right: 10px;         
-}
-
+/* Navigation */
 nav {
     background-color: #8d0303;
+    padding: 10px 0;
 }
 
 nav ul {
     list-style: none;
-    padding: 10px;
+    padding: 0;
     margin: 0;
     display: flex;
     justify-content: center;
@@ -72,46 +72,99 @@ nav ul li a {
     text-decoration: none;
 }
 
-main {
-    padding: 1em;
+/* Table styles */
+table, th, td {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 15px;
 }
-table , td, th {
-	border: 1px solid #595959;
-	border-collapse: collapse;
+
+table {
+    margin: 20px auto;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-td, th {
-	padding: 3px;
-	width: 30px;
-	height: 25px;
-}
+
 th {
-	background: #f0e6cc;
-}
-.even {
-	background: #fbf8f0;
-}
-.odd {
-	background: #fefcf9;
+    background-color: #fa0202;
+    color: white;
 }
 
-#calendar { font-family:Arial;font-size:12px;}
-#calendar caption {text-align:left;padding:30px 20px; background-color:#db0c0c;
-color:#fff;font-weight:bold;font-size:medium;}
-#calendar caption div:nth-child(1) {float:left;}
-#calendar caption div:nth-child(2) {float:right;}
-#calendar caption div:nth-child(2) a {cursor:pointer;} 
-#calendar th {background-color:#990000;color:#fff;width:40px;}
-#calendar td {text-align:right;padding:40px 50px;background-color:silver;}
-#calendar .hoy {background-color:red;}
-
-section {
-    margin: 1em 0;
+td {
+    background-color: #f9f9f9;
 }
 
-#Logo {
-margin-right: 90%;
+tr:nth-child(even) td {
+    background-color: #f1f1f1;
 }
 
+tfoot td {
+    font-weight: bold;
+}
+
+/* Calendar styles */
+#calendar {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin: 50px auto;
+    width: 20%;
+    border-collapse: collapse;
+}
+
+#calendar caption {
+    text-align: center;
+    padding: 15px;
+    background-color: #fa0202;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 10px 10px 0 0;
+}
+
+#calendar th {
+    background-color: #8d0303;
+    color: white;
+    padding: 10px;
+}
+
+#calendar td {
+    background-color: #f7f7f7;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+}
+
+#calendar td:hover {
+    background-color: #e6e6e6;
+}
+
+#calendar .hoy {
+    background-color: #fa0202;
+    color: white;
+    font-weight: bold;
+}
+
+#calendar caption div {
+    float: left;
+}
+
+#calendar caption div:nth-child(2) {
+    float: right;
+}
+
+#calendar caption div a {
+    cursor: pointer;
+    color: #fff;
+}
+
+#calendar caption:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* Buttons */
 main .botones {
     display: flex;
     justify-content: center;
@@ -129,14 +182,13 @@ main .botones {
     background-position: center;
     background-repeat: no-repeat;
     border: none;
-    color: transparent; 
+    color: transparent;
     font-size: 24px;
     padding: 50px 100px;
     text-align: center;
     cursor: pointer;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: inline-block;
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
@@ -144,7 +196,6 @@ main .botones {
     transform: scale(1.1);
     filter: blur(3px);
 }
-
 
 .texto-boton {
     position: absolute;
@@ -155,14 +206,123 @@ main .botones {
     font-size: 24px;
     font-weight: bold;
     text-shadow: 1px 1px 2px black;
-    pointer-events: none; 
+    pointer-events: none;
 }
 
+/* Footer */
 footer {
     background-color: #fa0202;
     color: white;
     text-align: center;
     padding: 20px 0;
-    width: 100%;
+    position: fixed;
     bottom: 0;
+    width: 100%;
+}
+
+/* Forms */
+.form-login {
+    width: 300px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.form-login h5 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #fa0202;
+}
+
+.controls {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.buttons {
+    width: 100%;
+    padding: 10px;
+    background-color: #fa0202;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buttons:hover {
+    background-color: #8d0303;
+}
+
+.form-login a {
+    color: #fa0202;
+    text-decoration: none;
+}
+
+/* Adaptación para pantallas pequeñas (móvil) */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .social-media-list li {
+        display: block;
+    }
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    table, th, td {
+        display: block;
+        width: 100%;
+    }
+
+    tr {
+        margin-bottom: 10px;
+    }
+
+    th {
+        display: none;
+    }
+
+    td {
+        text-align: left;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: bold;
+        color: #333;
+    }
+}
+.social-media-list {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.social-media-list li {
+    margin: 10px 0;
+}
+
+.social-icon {
+    width: 30px; /* Aumenta el tamaño de los iconos */
+    height: 30px;
+    margin-right: 10px;
 }
