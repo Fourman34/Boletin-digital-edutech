@@ -14,7 +14,7 @@ app.get('/:name/:id', (req, res) => {
 
 app.post('/', (req, res) => {
     const { email, password } = req.body;
-    res.send(`${email}: ${password}`);
+    res.send(`${gmail}: ${password}`);
 });
 
 app.put('/', (req, res) => {
@@ -24,6 +24,24 @@ app.put('/', (req, res) => {
 app.delete('/', (req, res) => {
     res.send('Petición DELETE');
 });
+
+// DB Routes
+    const connection = mysql2.createConnection({
+        host: '127.0.0.207', // Falta la coma
+        user: 'root',
+        password: 'tpi:escobar123',
+        database: 'colegio_guevara_boletin1'
+    });
+    
+connection.connect((err)=>{
+
+if (err) throw err
+console.log('BD conectada')
+})
+
+const querySQL = 'SHOW TABLES'
+
+connection.query(querySQL, )
 
 app.listen(3000, () => {
     console.log('Servidor encendido');

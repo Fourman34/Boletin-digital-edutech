@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     tabla.addEventListener("input", function (event) {
         if (event.target.tagName === "TD" && event.target.isContentEditable) {
-            const valor = parseInt(event.target.textContent);
+            const valor = parseInt(event.target.textContent.trim());
             if (isNaN(valor) || valor < 1 || valor > 10) {
                 event.target.textContent = "";
             }
