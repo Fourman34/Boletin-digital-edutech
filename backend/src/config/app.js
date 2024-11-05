@@ -1,8 +1,12 @@
 const express = require('express');
-
+const userRoutes = require('./routes/user.routes'); 
 const app = express();
 
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-module.exports = app
+// Endpoints
+app.use('/user', userRoutes); // Vincula el enrutador aquí
+
+module.exports = app;
