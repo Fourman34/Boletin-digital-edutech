@@ -4,20 +4,13 @@ const { createUser, readUser, updateUser, deleteUser } = require('../../controll
 const router = Router();
 
 // Define las rutas
-router.get('/:name/:id', createUser);
+router.get('/:id', readUser);
 
-router.post('/', (req, res) => {
-    const { email, password } = req.body;
-    res.send(`${email}: ${password}`);
-});
+router.post('/',createUser);
 
-router.put('/', (req, res) => {
-    res.send('Petición PUT');
-});
+router.put('/', updateUser);
 
-router.delete('/', (req, res) => {
-    res.send('Petición DELETE');
-});
+router.delete('/', deleteUser);
 
 // Exportar el enrutador
 module.exports = router;

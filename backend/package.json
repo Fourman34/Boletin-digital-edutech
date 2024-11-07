@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/config/index.js",
-  "scripts": { 
+  "scripts": {
     "dev": "nodemon src/config/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.21.1",
     "mysql2": "^3.11.3"
   },
