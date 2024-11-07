@@ -27,9 +27,9 @@ const readUser = (req, res) => {
 const createUser = (req, res) => {
     const { dni, nombre, apellido, email, password, ID_rol } = req.body;
 
-    const createQuery = 'INSERT INTO User(dni, nombre, apellido, email, password, ID_rol ) VALUE (?, ?, ?, ?, ?, ?)'
+    // Depuración: Verifica el valor de ID_rol que se está enviando
+    console.log("Verificando el rol con ID:", ID_rol);  // <-- Línea de depuración
 
-    const query = mysql2.format(createQuery, [dni, nombre, apellido, email, password, ID_rol ])
     // Verifica que el rol exista en la tabla de roles
     const checkRoleQuery = 'SELECT * FROM roles WHERE ID_rol = ?';
     database.query(checkRoleQuery, [ID_rol], (err, result) => {
@@ -38,13 +38,15 @@ const createUser = (req, res) => {
             return res.status(500).json({ message: 'Error al verificar el rol' });
         }
 
+        // Depuración: Muestra el resultado de la consulta
+        console.log("Resultado de la consulta de rol:", result);  // <-- Línea de depuración
+
         if (result.length === 0) {
             return res.status(404).json({ message: 'Rol no encontrado' });
         }
 
         // Si el rol existe, se procede a crear el usuario
         const createQuery = 'INSERT INTO usuarios (dni, nombre, apellido, email, contraseña, ID_rol) VALUES (?, ?, ?, ?, ?, ?)';
-
         database.query(createQuery, [dni, nombre, apellido, email, password, ID_rol], (err, result) => {
             if (err) {
                 console.error(err);
