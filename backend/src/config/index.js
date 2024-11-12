@@ -9,7 +9,7 @@ const main = () => {
         }
         console.log('Base de datos conectada');
         
-        app.listen(3000, () => {
+        app.listen(4000, () => {
             console.log('Servidor escuchando en el puerto 3000');
         });
     });
