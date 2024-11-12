@@ -4,7 +4,7 @@
     <link rel="icon" href="logo.webp" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar Contraseña</title>
+    <title>Actualizar Datos</title>
     <link rel="stylesheet" href="index1.css">
 </head>
 <body>
@@ -24,15 +24,59 @@
     </nav>
 
     <section class="form-login">
-        <h5>Recuperar Contraseña</h5>
-        <form action="http://127.0.0.1:3000/recuperar-contraseña" method="POST">
-            <!-- Campo para el correo electrónico -->
-            <input class="controls" type="email" name="email" placeholder="Correo electrónico" required>
-            <!-- Botón para enviar el formulario -->
-            <input class="buttons" type="submit" value="Recuperar Contraseña">
+        <h5>Actualizar Datos</h5>
+        <form id="updateForm">
+            <input class="controls" type="text" name="nombre" id="nombre" placeholder="Nombre" required>
+            <input class="controls" type="email" name="email" id="email" placeholder="Correo electrónico" required>
+            <input class="controls" type="password" name="password" id="password" placeholder="Nueva Contraseña">
+            <input class="controls" type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirmar Contraseña">
+            <input class="buttons" type="submit" value="Actualizar Datos">
         </form>
-        <p><a href="iniciar-sesion.html">Volver a Iniciar Sesión</a></p>
+        
+        <script>
+            document.getElementById('updateForm').addEventListener('submit', async function(event) {
+                event.preventDefault();  // Prevenir envío automático del formulario
+        
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                // Validar contraseñas
+                if (password && password !== confirmPassword) {
+                    alert('Las contraseñas no coinciden.');
+                    return;
+                }
+        
+                const data = {
+                    nombre: document.getElementById('nombre').value,
+                    email: document.getElementById('email').value,
+                    password: password || undefined  // Enviar la contraseña solo si se proporciona una nueva
+                };
+        
+                try {
+                    const response = await fetch('http://127.0.0.1:3000/user', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+        
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('Datos actualizados correctamente.');
+                        window.location.href = 'perfil.html';  // Redirigir a la página de perfil u otra página deseada
+                    } else {
+                        alert('Hubo un problema al actualizar los datos: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Error al actualizar los datos:', error);
+                    alert('Hubo un error al actualizar los datos. Inténtalo de nuevo.');
+                }
+            });
+        </script>
     </section>
+
+    <br><br><br><br><br><br><br><br>
 
     <footer>
         <p>&copy; 2024 EduTech. Derechos Reservados.</p>

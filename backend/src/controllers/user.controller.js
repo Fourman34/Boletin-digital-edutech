@@ -1,5 +1,4 @@
 const database = require('../config/database');
-const mysql2 = require('mysql2');
 const bcrypt = require('bcrypt');  // Para encriptar las contraseñas
 const { body, validationResult } = require('express-validator');  // Para validar datos
 
@@ -11,9 +10,7 @@ const readUser = (req, res) => {
                        JOIN roles ON usuarios.ID_rol = roles.ID_rol 
                        WHERE ID_usuario = ?;`;
 
-    const query = mysql2.format(readQuery, [id]);
-
-    database.query(query, (err, result) => {
+    database.query(readQuery, [id], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Error en la consulta a la base de datos' });
@@ -23,7 +20,7 @@ const readUser = (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        res.status(200).json(result[0]); // Retorna el usuario encontrado con su rol
+        res.status(200).json(result[0]);  // Retorna el usuario encontrado con su rol
     });
 };
 
@@ -76,9 +73,8 @@ const createUser = [
 ];
 
 // Función para actualizar un usuario
-// Función para actualizar un usuario
 const updateUser = (req, res) => {
-    const { id } = req.params;  // Actualizamos el usuario usando su ID
+    const { id } = req.params;
     const { dni, nombre, apellido, email, password, ID_rol } = req.body;
 
     const updateQuery = `
@@ -86,10 +82,10 @@ const updateUser = (req, res) => {
         SET dni = ?, nombre = ?, apellido = ?, email = ?, contraseña = ?, ID_rol = ?
         WHERE ID_usuario = ?`;
 
-    // Los valores que pasarán a la consulta SQL
-    const values = [dni, nombre, apellido, email, password, ID_rol, id];
+    // Hash de la contraseña antes de actualizarla
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
-    database.query(updateQuery, values, (err, result) => {
+    database.query(updateQuery, [dni, nombre, apellido, email, hashedPassword, ID_rol, id], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Error al actualizar el usuario' });
@@ -105,14 +101,11 @@ const updateUser = (req, res) => {
 
 // Función para eliminar un usuario
 const deleteUser = (req, res) => {
-    const { id } = req.params;  // Obtener el ID del usuario a eliminar
+    const { id } = req.params;
 
-    const deleteQuery = 'DELETE FROM usuarios WHERE ID_usuario = ?';  // SQL para eliminar usuario
+    const deleteQuery = 'DELETE FROM usuarios WHERE ID_usuario = ?';
 
-    const query = mysql2.format(deleteQuery, [id]);  // Formatear la consulta con el ID del usuario
-
-    // Ejecutar la consulta
-    database.query(query, (err, result) => {
+    database.query(deleteQuery, [id], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Error al eliminar el usuario' });
@@ -125,9 +118,6 @@ const deleteUser = (req, res) => {
         res.status(200).json({ message: 'Usuario eliminado con éxito' });
     });
 };
-
-
-
 
 module.exports = {
     createUser,
