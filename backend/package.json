@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/config/index.js",
   "scripts": {
+    "start": "node src/config/index.js",
     "dev": "nodemon src/config/index.js"
   },
   "keywords": [],
@@ -12,6 +13,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "express": "^4.21.1",
+    "express-validator": "^7.2.0",
     "mysql2": "^3.11.3"
   },
   "devDependencies": {

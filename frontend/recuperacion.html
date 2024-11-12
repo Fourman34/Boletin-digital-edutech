@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="logo.webp" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña</title>
+    <link rel="stylesheet" href="index1.css">
+</head>
+<body>
+    <header>
+        <img id="Logo" src="logo.webp" height="90" width="90">
+        <h1>Colegio Provincial Dr. Ernesto Guevara</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index1.html">Inicio</a></li>
+            <li><a href="calendario.html">Calendario</a></li>
+            <li><a href="contactar.html">Contacto</a></li>
+            <li><a href="matricularse.html">Matricularse</a></li>
+            <li><a href="materias(A).html">Materias</a></li>
+        </ul>
+    </nav>
+
+    <section class="form-login">
+        <h5>Recuperar Contraseña</h5>
+        <form action="http://127.0.0.1:3000/recuperar-contraseña" method="POST">
+            <!-- Campo para el correo electrónico -->
+            <input class="controls" type="email" name="email" placeholder="Correo electrónico" required>
+            <!-- Botón para enviar el formulario -->
+            <input class="buttons" type="submit" value="Recuperar Contraseña">
+        </form>
+        <p><a href="iniciar-sesion.html">Volver a Iniciar Sesión</a></p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 EduTech. Derechos Reservados.</p>
+    </footer>
+</body>
+</html>

@@ -24,13 +24,24 @@
 
     <section class="form-login">
         <h5>Crear Cuenta</h5>
-        <input class="controls" type="text" name="nombre" placeholder="Nombre completo">
-        <input class="controls" type="email" name="correo" placeholder="Correo electrónico">
-        <input class="controls" type="password" name="contraseña" placeholder="Contraseña">
-        <input class="controls" type="password" name="confirmar-contraseña" placeholder="Confirmar contraseña">
-        <input class="buttons" type="submit" value="Crear Cuenta">
+        <form action="http://127.0.0.1:3000/register" method="POST">
+            <!-- Agrega el campo para el DNI -->
+            <input class="controls" type="text" name="dni" placeholder="DNI" required>
+            <input class="controls" type="text" name="nombre" placeholder="Nombre completo" required>
+            <!-- Agrega el campo para el apellido -->
+            <input class="controls" type="text" name="apellido" placeholder="Apellido" required>
+            <input class="controls" type="email" name="email" placeholder="Correo electrónico" required>
+            <input class="controls" type="password" name="password" placeholder="Contraseña" required>
+            <input class="controls" type="password" name="confirmPassword" placeholder="Confirmar contraseña" required>
+            
+            <!-- Campo para el ID de rol (opcional si hay roles predefinidos como alumno, docente, etc.) -->
+            <input class="controls" type="text" name="ID_rol" placeholder="Maestro o alumno" required>
+            
+            <input class="buttons" type="submit" value="Crear Cuenta">
+        </form>
         <p>¿Ya tienes una cuenta? <a href="matricularse.html">Iniciar sesión</a></p>
     </section>
+    
     <br>
     <br>    
     <br>
