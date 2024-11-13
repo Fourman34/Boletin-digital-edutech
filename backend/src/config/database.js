@@ -1,10 +1,12 @@
+require('dotenv').config();  // Cargar las variables de entorno desde el archivo .env
 const mysql2 = require('mysql2');
 
+// Crear la conexión usando las variables de entorno
 const connection = mysql2.createConnection({
-    host: '127.0.0.207',  // Verifica que esta IP sea correcta, si no usa 'localhost'
-    user: 'root',
-    password: 'tpi:escobar123',  // Asegúrate que sea la contraseña correcta
-    database: 'colegio_guevara_boletin1'
+    host: process.env.DB_HOST,       // Usar la variable de entorno DB_HOST
+    user: process.env.DB_USER,       // Usar la variable de entorno DB_USER
+    password: process.env.DB_PASSWORD, // Usar la variable de entorno DB_PASSWORD
+    database: process.env.DB_NAME    // Usar la variable de entorno DB_NAME
 });
 
 // Agregar manejo de errores detallado

@@ -1,18 +1,21 @@
-const app = require('./app');
-const database = require('./database');
+require('dotenv').config();  // Cargar las variables de entorno desde el archivo .env
 
-const main = () => {
-    database.connect((err) => {
-        if (err) {
-            console.error('Error al conectar a la base de datos:', err);
-            return;
-        }
-        console.log('Base de datos conectada');
-        
-        app.listen(4000, () => {
-            console.log('Servidor escuchando en el puerto 3000');
-        });
-    });
-};
+const express = require('express');
+const userRoutes = require('./routes/user.routes');
+const app = express();  // Definir la instancia de la aplicación
 
-main();
+app.set('port', process.env.PORT || 3000);  // Usa la variable de entorno PORT o el valor predeterminado 3000
+
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Rutas
+app.use('/user', userRoutes);  // Ruta para manejar usuarios
+
+// Iniciar el servidor
+app.listen(app.get('port'), () => {
+    console.log(`Servidor corriendo en http://localhost:${app.get('port')}`);
+});
+
+module.exports = app;  // Exportar la instancia de la app
