@@ -15,7 +15,7 @@ app.use('/user', userRoutes);  // Ruta para manejar usuarios
 
 // Iniciar el servidor
 app.listen(app.get('port'), () => {
-    console.log(`Servidor corriendo en http://localhost:${app.get('port')}`);
+    console.log(`Servidor corriendo en http://3306:${app.get('port')}`);
 });
 
 module.exports = app;  // Exportar la instancia de la app

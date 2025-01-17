@@ -66,7 +66,8 @@
 
             try {
                 // Enviar los datos al servidor para crear la cuenta
-                const response = await fetch('http://127.0.0.1:3000/user', {
+                const response = await fetch('http://127.0.0.1:3306', 
+                {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -83,7 +84,7 @@
                     // Mostrar un error si la creación falló
                     alert(result.message || 'Hubo un error al crear la cuenta. Inténtalo de nuevo.');
                 }
-            } catch (error) {
+                } catch (error) {
                 console.error('Error:', error);
                 alert('Hubo un error al crear la cuenta. Inténtalo de nuevo.');
             }

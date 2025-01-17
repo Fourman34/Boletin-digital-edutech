@@ -16,9 +16,10 @@ formRegister.addEventListener('submit', async (e) => {
     // Validación de contraseñas
     if (password !== confirmPassword) {
         message = 'Las contraseñas no coinciden.';
-    } else {
+    } 
+    else {
         // Solicitud POST al servidor
-        await fetch('http://127.0.0.1:3000/user', {
+        await fetch('http://127.0.0.1:3306/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ formLogin.addEventListener('submit', async (e) => {
   let message = '';
 
   // Realizamos la solicitud POST al servidor para autenticar al usuario
-  await fetch('http://127.0.0.1:3000/login', {
+  await fetch('http://127.0.0.1:3306/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ formLogin.addEventListener('submit', async (e) => {
     .then((data) => {
       if (data.success) {
         message = 'Inicio de sesión exitoso.';
-        window.location.href = 'dashboard.html'; // Redirigir a un dashboard u otra página de éxito
+        window.location.href = 'success.html'; // Redirigir a un dashboard u otra página de éxito
       } else {
         message = 'Correo o contraseña incorrectos.';
       }
