@@ -9,7 +9,7 @@ formLogin.addEventListener('submit', async (e) => {
   let message = '';
 
   // Realizamos la solicitud POST al servidor para autenticar al usuario
-  await fetch('http://127.0.0.1:3306/login', {
+  await fetch('http://127.0.0.1:5500/frontend/matricularse.html', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

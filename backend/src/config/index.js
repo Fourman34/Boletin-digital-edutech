@@ -10,12 +10,17 @@ app.set('port', process.env.PORT || 3000);  // Usa la variable de entorno PORT o
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Ruta raíz
+app.get('/', (req, res) => {
+    res.send('Bienvenido a la API');
+});
+
 // Rutas
 app.use('/user', userRoutes);  // Ruta para manejar usuarios
 
 // Iniciar el servidor
 app.listen(app.get('port'), () => {
-    console.log(`Servidor corriendo en http://3306:${app.get('port')}`);
+    console.log(`Servidor corriendo en http://localhost:${app.get('port')}`);
 });
 
 module.exports = app;  // Exportar la instancia de la app
