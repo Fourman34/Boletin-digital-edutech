@@ -1,27 +1,41 @@
-const express = require('express');
-const userRoutes = require('./routes/user.routes.js');  // Ruta a las rutas de usuarios
-const app = express();
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
-app.set('port', 3000);
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
-// Middlewares
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Rutas
-app.use('/user', userRoutes);  // Ruta para manejar usuarios
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 module.exports = app;
-
-const path = require('path'); // Importar path
-
-app.use(express.static(path.join(__dirname, '../../../frontend')));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.resolve('C:/Users/lauta/OneDrive/Escritorio/TPI/pagina web/boletin digital Edutech/frontend/index1.html'));
-});
-
-// Iniciar el servidor
-app.listen(app.get('port'), () => {
-    console.log(`servidor corriendo en http://localhost:${app.get('port')}`);  // Usa backticks para interpolar la variable
-});

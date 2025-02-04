@@ -25,13 +25,13 @@
     <section class="form-login">
         <h5>Iniciar Sesión</h5>
         <form id="loginForm">
-            <input class="controls" type="email" name="email" placeholder="Correo electrónico" required>
-            <input class="controls" type="password" name="password" placeholder="Contraseña" required>
+            <p id="loginMessage" style="color: red;"></p>
+            <input class="controls" type="email" name="email" placeholder="Correo electrónico" required autocomplete="email">
+            <input class="controls" type="password" name="password" placeholder="Contraseña" required autocomplete="current-password">
             <input class="buttons" type="submit" value="Ingresar">
         </form>
 
-        <script href="matricularse.js">
-            </script>
+       
         
         <p><a href="recuperacion.html">¿Olvidaste tu contraseña?</a></p>
         <p><a href="crear cuenta.html">Crear cuenta</a></p>
@@ -42,5 +42,6 @@
     <footer>
         <p>&copy; 2024 EduTech. Derechos Reservados.</p>
     </footer>
+    <script src="matricularse.js"></script> 
 </body>
 </html>
