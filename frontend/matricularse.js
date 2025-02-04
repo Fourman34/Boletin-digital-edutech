@@ -1,34 +1,25 @@
-const formLogin = document.getElementById('loginForm'); // El formulario de inicio de sesión
+const formLogin = document.getElementById('loginForm'); // Captura el formulario
 
 formLogin.addEventListener('submit', async (e) => {
-  e.preventDefault();  // Evitar el comportamiento predeterminado del formulario
+  e.preventDefault(); // Evita que la página se recargue automáticamente
 
   const email = e.target.email.value;
   const password = e.target.password.value;
 
-  let message = '';
-
-  // Realizamos la solicitud POST al servidor para autenticar al usuario
-  await fetch('http://127.0.0.1:5500/frontend/matricularse.html', {
+  const response = await fetch('http://127.0.0.1:5500/frontend/matricularse.html', { // Enviar datos al backend
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password }), // Enviamos las credenciales
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        message = 'Inicio de sesión exitoso.';
-        window.location.href = 'success.html'; // Redirigir a un dashboard u otra página de éxito
-      } else {
-        message = 'Correo o contraseña incorrectos.';
-      }
-    })
-    .catch((error) => {
-      message = 'Hubo un error al iniciar sesión. Inténtalo de nuevo.';
-      console.error('Error al iniciar sesión:', error);
-    });
+    body: JSON.stringify({ email, password }), // Enviar credenciales
+  });
 
-  document.getElementById('loginMessage').innerHTML = message;  // Mostrar el mensaje al usuario
+  const data = await response.json(); // Convertir respuesta en JSON
+
+  if (data.success) {
+    alert('Inicio de sesión exitoso.');
+    window.location.href = 'success.html'; // Redirigir al usuario
+  } else {
+    document.getElementById('loginMessage').innerText = 'Correo o contraseña incorrectos.';
+  }
 });

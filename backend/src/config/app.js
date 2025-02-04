@@ -13,8 +13,12 @@ app.use('/user', userRoutes);  // Ruta para manejar usuarios
 
 module.exports = app;
 
+const path = require('path'); // Importar path
+
+app.use(express.static(path.join(__dirname, '../../../frontend')));
+
 app.get('/', (req, res) => {
-    res.sendFile('frontend\index1.html');
+    res.sendFile(path.resolve('C:/Users/lauta/OneDrive/Escritorio/TPI/pagina web/boletin digital Edutech/frontend/index1.html'));
 });
 
 // Iniciar el servidor
