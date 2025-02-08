@@ -8,6 +8,22 @@
     <link rel="stylesheet" href="index1.css">
 </head>
 <body>
+    <script>
+        // Verificar si el usuario ya está autenticado
+        const usuarioString = localStorage.getItem('usuario');
+        if (usuarioString) {
+            try {
+                const usuario = JSON.parse(usuarioString);
+                if (usuario && usuario.ID_usuario) { // Verificar que el usuario tenga un ID válido
+                    console.log('Usuario autenticado, redirigiendo a success.html'); // Depuración
+                    window.location.href = 'success.html';
+                }
+            } catch (error) {
+                console.error('Error al parsear el usuario:', error);
+            }
+        }
+    </script>
+
     <header>
         <img id="Logo" src="logo.webp" height="90" width="90">
         <h1>Colegio Provincial Dr. Ernesto Guevara</h1>
@@ -31,8 +47,6 @@
             <input class="buttons" type="submit" value="Ingresar">
         </form>
 
-       
-        
         <p><a href="recuperacion.html">¿Olvidaste tu contraseña?</a></p>
         <p><a href="crear cuenta.html">Crear cuenta</a></p>
     </section>

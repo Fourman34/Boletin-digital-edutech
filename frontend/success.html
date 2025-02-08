@@ -8,6 +8,36 @@
     <link rel="stylesheet" href="index1.css">
 </head>
 <body>
+    <script>
+        // Verificar si el usuario NO está autenticado
+        const usuarioString = localStorage.getItem('usuario');
+        if (!usuarioString) {
+            console.log('Usuario no autenticado, redirigiendo a matricularse.html'); // Depuración
+            window.location.href = 'matricularse.html';
+        } else {
+            try {
+                const usuario = JSON.parse(usuarioString);
+                if (usuario && usuario.ID_usuario) { // Verificar que el usuario tenga un ID válido
+                    console.log('Usuario autenticado, mostrando información'); // Depuración
+                    document.getElementById('userName').textContent = usuario.nombre;
+                    document.getElementById('userRole').textContent = usuario.rol;
+                } else {
+                    console.log('Usuario no válido, redirigiendo a matricularse.html'); // Depuración
+                    window.location.href = 'matricularse.html';
+                }
+            } catch (error) {
+                console.error('Error al parsear el usuario:', error);
+                window.location.href = 'matricularse.html'; // Redirigir si hay un error
+            }
+        }
+
+        // Cerrar sesión al hacer clic en el botón "Cerrar sesión"
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('usuario');  // Eliminar el dato de usuario
+            window.location.href = 'matricularse.html';  // Redirigir a la página de inicio de sesión
+        });
+    </script>
+
     <header>
         <img id="Logo" src="logo.webp" height="90" width="90" alt="Logo del Colegio Provincial Dr. Ernesto Guevara">
         <h1>Colegio Provincial Dr. Ernesto Guevara</h1>
@@ -26,7 +56,8 @@
     <main>
         <section class="success-message">
             <h2>¡Inicio de sesión exitoso!</h2>
-            <p>Has iniciado sesión correctamente. Bienvenido a tu perfil.</p>
+            <p>Bienvenido, <span id="userName"></span>.</p>
+            <p>Tu rol es: <span id="userRole"></span>.</p>
             <button id="logoutBtn" class="logout-button">Cerrar sesión</button>
         </section>
     </main>
@@ -34,16 +65,5 @@
     <footer>
         <p>&copy; 2024 EduTech. Todos los derechos reservados.</p>
     </footer>
-
-    <script>
-        // Cerrar sesión al hacer clic en el botón "Cerrar sesión"
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            // Eliminar cualquier dato de sesión almacenado (por ejemplo, un token de autenticación en localStorage)
-            localStorage.removeItem('user');  // Aquí se elimina un dato de usuario guardado en localStorage
-
-            // Redirigir a la página de inicio de sesión o la página principal
-            window.location.href = 'index1.html';  // Cambia la URL según sea necesario (inicio de sesión o página principal)
-        });
-    </script>
 </body>
 </html>

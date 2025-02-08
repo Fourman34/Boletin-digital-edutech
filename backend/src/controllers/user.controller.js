@@ -1,9 +1,9 @@
 const database = require('../config/database');
-const { body, validationResult } = require('express-validator'); // Para validar datos
+const { body, validationResult } = require('express-validator');
 
 // Función para leer un usuario
 const readUser = (req, res) => {
-    const { id } = req.params; // Se espera que el ID de usuario sea un parámetro en la URL
+    const { id } = req.params;
 
     const readQuery = `
         SELECT usuarios.*, roles.nombre_rol 
@@ -22,7 +22,7 @@ const readUser = (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado.' });
         }
 
-        res.status(200).json(result[0]); // Retorna el usuario encontrado con su rol
+        res.status(200).json(result[0]);
     });
 };
 
@@ -37,7 +37,6 @@ const createUser = [
     body('ID_rol').notEmpty().isNumeric().withMessage('El ID de rol es obligatorio y debe ser un número.'),
 
     async (req, res) => {
-        // Manejo de errores de validación
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
