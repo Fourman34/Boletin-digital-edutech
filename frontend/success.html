@@ -23,14 +23,16 @@
                     document.getElementById('userRole').textContent = usuario.rol;
                 } else {
                     console.log('Usuario no válido, redirigiendo a matricularse.html'); // Depuración
+                    localStorage.removeItem('usuario'); // Borrar el usuario inválido
                     window.location.href = 'matricularse.html';
                 }
             } catch (error) {
                 console.error('Error al parsear el usuario:', error);
+                localStorage.removeItem('usuario'); // Borrar el usuario si hay un error
                 window.location.href = 'matricularse.html'; // Redirigir si hay un error
             }
         }
-
+    
         // Cerrar sesión al hacer clic en el botón "Cerrar sesión"
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('usuario');  // Eliminar el dato de usuario

@@ -17,9 +17,13 @@
                 if (usuario && usuario.ID_usuario) { // Verificar que el usuario tenga un ID válido
                     console.log('Usuario autenticado, redirigiendo a success.html'); // Depuración
                     window.location.href = 'success.html';
+                } else {
+                    console.log('Usuario no válido, borrando localStorage...'); // Depuración
+                    localStorage.removeItem('usuario'); // Borrar el usuario inválido
                 }
             } catch (error) {
                 console.error('Error al parsear el usuario:', error);
+                localStorage.removeItem('usuario'); // Borrar el usuario si hay un error
             }
         }
     </script>
