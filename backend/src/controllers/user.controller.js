@@ -123,25 +123,19 @@ const deleteUser = (req, res) => {
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
-    // 1. Verifica que los datos se estén recibiendo correctamente
-    console.log('Datos recibidos:', { email, password });
-
     try {
-        // Busca al usuario en la base de datos por su email
         const query = `
             SELECT usuarios.*, roles.nombre_rol 
             FROM usuarios 
             JOIN roles ON usuarios.ID_rol = roles.ID_rol 
-            WHERE email = ?`;
-        
-        database.query(query, [email], async (err, result) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ message: 'Error en la consulta a la base de datos' });
-            }
+            WHERE email = ?;
+        `;
 
-            // 2. Verifica el resultado de la consulta
-            console.log('Resultado de la consulta:', result);
+        database.query(query, [email], (err, result) => {
+            if (err) {
+                console.error('Error en la consulta a la base de datos:', err);
+                return res.status(500).json({ message: 'Error al iniciar sesión. Por favor, inténtalo de nuevo.' });
+            }
 
             if (result.length === 0) {
                 return res.status(400).json({ message: 'Correo electrónico no registrado.' });
@@ -149,21 +143,16 @@ const loginUser = async (req, res) => {
 
             const user = result[0];
 
-            // Compara la contraseña proporcionada con la almacenada en la base de datos
-            const isPasswordValid = await bcrypt.compare(password, user.contraseña);
-
-            // 3. Verifica si la contraseña es válida
-            console.log('¿Contraseña válida?', isPasswordValid);
-
-            if (!isPasswordValid) {
+            // Compara las contraseñas en texto plano
+            if (password !== user.contraseña) {
                 return res.status(400).json({ message: 'Contraseña incorrecta.' });
             }
 
-            // Si las credenciales son válidas, devuelve una respuesta exitosa
+            // Respuesta exitosa
             res.status(200).json({ 
                 success: true,
                 message: 'Inicio de sesión exitoso.', 
-                user: {
+                usuario: {
                     ID_usuario: user.ID_usuario,
                     dni: user.dni,
                     nombre: user.nombre,
@@ -175,7 +164,7 @@ const loginUser = async (req, res) => {
         });
     } catch (error) {
         console.error('Error en el inicio de sesión:', error);
-        res.status(500).json({ message: 'Error en el servidor.' });
+        res.status(500).json({ message: 'Error en el servidor. Por favor, inténtalo de nuevo.' });
     }
 };
 
