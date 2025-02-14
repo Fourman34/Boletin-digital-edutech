@@ -9,32 +9,32 @@
 </head>
 <body>
     <script>
-       // Verificar si el usuario NO está autenticado
-const usuarioString = localStorage.getItem('usuario');
-if (!usuarioString) {
-    console.log('Usuario no autenticado, redirigiendo a matricularse.html'); // Depuración
-    window.location.href = 'matricularse.html';
-} else {
-    try {
-        const usuario = JSON.parse(usuarioString);
-        if (usuario && usuario.ID_usuario) { // Verificar que el usuario tenga un ID válido
-            console.log('Usuario autenticado, mostrando información'); // Depuración
-            document.getElementById('userName').textContent = usuario.nombre;
-            document.getElementById('userRole').textContent = usuario.rol;
+        // Verificar si hay un usuario en el localStorage
+        const usuarioString = localStorage.getItem('usuario');
+        console.log('Contenido del localStorage (usuario):', usuarioString); // Depuración
+
+        if (usuarioString) {
+            try {
+                const usuario = JSON.parse(usuarioString);
+                console.log('Usuario parseado:', usuario); // Depuración
+
+                if (usuario && usuario.ID_usuario) { // Verificar que el usuario tenga un ID válido
+                    console.log('Mostrando información del usuario...'); // Depuración
+                    document.getElementById('userName').textContent = usuario.nombre;
+                    document.getElementById('userRole').textContent = usuario.rol;
+                } else {
+                    console.log('Usuario no válido en localStorage.'); // Depuración
+                }
+            } catch (error) {
+                console.error('Error al parsear el usuario:', error); // Depuración
+            }
         } else {
-            console.log('Usuario no válido, redirigiendo a matricularse.html'); // Depuración
-            localStorage.removeItem('usuario'); // Borrar el usuario inválido
-            window.location.href = 'matricularse.html';
+            console.log('No hay usuario en localStorage.'); // Depuración
         }
-    } catch (error) {
-        console.error('Error al parsear el usuario:', error);
-        localStorage.removeItem('usuario'); // Borrar el usuario si hay un error
-        window.location.href = 'matricularse.html'; // Redirigir si hay un error
-    }
-}
 
         // Cerrar sesión al hacer clic en el botón "Cerrar sesión"
         document.getElementById('logoutBtn').addEventListener('click', () => {
+            console.log('Cerrar sesión clickeado'); // Depuración
             localStorage.removeItem('usuario');  // Eliminar el dato de usuario
             window.location.href = 'matricularse.html';  // Redirigir a la página de inicio de sesión
         });

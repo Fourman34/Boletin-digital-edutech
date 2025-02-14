@@ -1,29 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const formLogin = document.getElementById('loginForm');
 
-    // Verificar si el usuario ya está autenticado
-    const usuarioString = localStorage.getItem('usuario');
-    if (usuarioString) {
-        try {
-            const usuario = JSON.parse(usuarioString);
-            if (usuario && usuario.ID_usuario) {
-                console.log('Usuario autenticado, redirigiendo a success.html'); // Depuración
-                window.location.href = 'success.html';
-                return; // Salir de la función para evitar ejecuciones adicionales
-            }
-        } catch (error) {
-            console.error('Error al parsear el usuario:', error);
-            localStorage.removeItem('usuario'); // Borrar el usuario si hay un error
-        }
-    }
-
     if (!formLogin) {
         console.error("No se encontró el formulario en el DOM.");
         return;
     }
 
     formLogin.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evita que el formulario se recargue
+        e.preventDefault();
 
         const email = e.target.email.value;
         const password = e.target.password.value;
@@ -33,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const response = await fetch('http://localhost:3000/user/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }, // Corregido
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
             });
 
@@ -50,9 +34,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (data.success) {
                 alert('✅ Inicio de sesión exitoso.');
-                console.log('Guardando usuario en localStorage:', data.usuario); // Depuración
-                localStorage.setItem('usuario', JSON.stringify(data.usuario)); // Guardar el usuario en localStorage
+                console.log('Usuario recibido del servidor:', data.user); // Depuración
+                localStorage.setItem('usuario', JSON.stringify(data.user)); // Guardar el usuario en localStorage
                 console.log('Usuario guardado en localStorage:', localStorage.getItem('usuario')); // Depuración
+
+                // Redirigir a success.html
                 console.log('Redirigiendo a success.html...'); // Depuración
                 window.location.href = 'success.html'; // Redirigir directamente
             } else {
