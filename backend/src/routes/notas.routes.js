@@ -1,4 +1,3 @@
-// routes/notas.routes.js
 const express = require("express");
 const { verificarGestor } = require("../middlewares/authMiddleware");
 const { obtenerNotas, guardarNotas } = require("../controllers/notas.controller");

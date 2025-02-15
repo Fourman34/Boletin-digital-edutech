@@ -1,4 +1,3 @@
-// controllers/notas.controller.js
 const database = require("../config/database");
 
 // Función para obtener notas
