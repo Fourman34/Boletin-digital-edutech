@@ -38,9 +38,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 localStorage.setItem('usuario', JSON.stringify(data.user)); // Guardar el usuario en localStorage
                 console.log('Usuario guardado en localStorage:', localStorage.getItem('usuario')); // Depuración
 
-                // Redirigir a success.html
-                console.log('Redirigiendo a success.html...'); // Depuración
-                window.location.href = 'success.html'; // Redirigir directamente
+                // Redirigir según el rol
+                if (data.user.rol === 'Alumno') {
+                    window.location.href = 'materias(A).html';
+                } else if (data.user.rol === 'Gestor de notas') {
+                    window.location.href = 'gestor_de_notas.html';
+                } else {
+                    // Redirigir a una página por defecto si el rol no coincide
+                    window.location.href = 'success.html';
+                }
             } else {
                 const messageElement = document.getElementById('loginMessage');
                 if (messageElement) {

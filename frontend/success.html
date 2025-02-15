@@ -19,10 +19,9 @@
             <li><a href="calendario.html">Calendario</a></li>
             <li><a href="contactar.html">Contacto</a></li>
             <li><a href="matricularse.html">Matricularse</a></li>
-            <li><a href="materias(A).html">Materias</a></li>
+            <li id="materiasLink"><a href="#" id="materiasEnlace">Materias</a></li>
         </ul>
     </nav>
-
     <main>
         <section class="success-message">
             <h2>¡Inicio de sesión exitoso!</h2>
@@ -35,6 +34,28 @@
     <footer>
         <p>&copy; 2024 EduTech. Todos los derechos reservados.</p>
     </footer>
+    <button onclick="cerrarSesion()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Cerrar sesión
+    </button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const materiasLink = document.getElementById('materiasLink');
+
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+            if (!usuario) {
+                materiasLink.style.display = 'none';
+            } else {
+                materiasLink.style.display = 'block';
+            }
+        });
+
+        function cerrarSesion() {
+            localStorage.removeItem('usuario'); 
+            window.location.href = 'matricularse.html'; 
+        }
+    </script>
 
     <script>
         // Verificar si hay un usuario en el localStorage
@@ -76,5 +97,6 @@
             console.error('No se encontraron los elementos en el DOM.'); // Depuración
         }
     </script>
+    <script src="materiasEnlace.js"></script>
 </body>
 </html>
