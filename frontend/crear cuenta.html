@@ -4,7 +4,7 @@
     <link rel="icon" href="logo.webp" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>crear cuenta</title>
+    <title>Crear Cuenta</title>
     <link rel="stylesheet" href="index1.css">
 </head>
 <body>
@@ -33,8 +33,17 @@
                 <input class="controls" type="email" name="email" placeholder="Correo electrónico" required>
                 <input class="controls" type="password" name="password" placeholder="Contraseña" required>
                 <input class="controls" type="password" name="confirmPassword" placeholder="Confirmar contraseña" required>
+                
+                <!-- Campo de selección de rol -->
+                <select class="controls" name="rol" required>
+                    <option value="" disabled selected>Selecciona tu rol</option>
+                    <option value="1">Alumno</option>
+                    <option value="2">Gestor de notas</option>
+                </select>
+
                 <input class="buttons" type="submit" value="Crear Cuenta">
             </form>
+            <p id="message" style="color: red;"></p>
         </section>
     </main>
 
@@ -42,54 +51,7 @@
         <p>&copy; 2024 EduTech. Todos los derechos reservados.</p>
     </footer>
 
-    <script>
-        document.getElementById('createAccountForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const password = e.target.password.value;
-            const confirmPassword = e.target.confirmPassword.value;
-
-            // Validar si las contraseñas coinciden
-            if (password !== confirmPassword) {
-                alert('Las contraseñas no coinciden.');
-                return;
-            }
-
-            const formData = new FormData(e.target);
-            const data = {
-                dni: formData.get('dni'),
-                nombre: formData.get('nombre'),
-                apellido: formData.get('apellido'),
-                email: formData.get('email'),
-                password: formData.get('password')
-            };
-
-            try {
-                // Enviar los datos al servidor para crear la cuenta
-                const response = await fetch('http://127.0.0.1:3306', 
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    // Redirigir a success.html si la cuenta se creó correctamente
-                    window.location.href = 'success.html';
-                } else {
-                    // Mostrar un error si la creación falló
-                    alert(result.message || 'Hubo un error al crear la cuenta. Inténtalo de nuevo.');
-                }
-                } catch (error) {
-                console.error('Error:', error);
-                alert('Hubo un error al crear la cuenta. Inténtalo de nuevo.');
-            }
-        });
-    </script>
+    <script src="crear cuenta.js"></script>
 </body>
 <br><br><br><br><br><br>
 </html>

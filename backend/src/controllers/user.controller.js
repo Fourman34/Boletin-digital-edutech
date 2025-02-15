@@ -65,7 +65,10 @@ const createUser = [
             database.query(createQuery, [dni, nombre, apellido, email, password, ID_rol], (err, result) => {
                 if (err) {
                     console.error('Error al crear el usuario:', err);
-                    return res.status(500).json({ message: 'Error al crear el usuario. Por favor, inténtalo de nuevo.' });
+                    return res.status(500).json({ 
+                        message: 'Error al crear el usuario. Por favor, inténtalo de nuevo.',
+                        error: err.message // Devuelve el mensaje de error específico
+                    });
                 }
 
                 res.status(201).json({ 
@@ -179,5 +182,5 @@ module.exports = {
     readUser,
     updateUser,
     deleteUser,
-    loginUser, // Asegúrate de que loginUser esté exportado
+    loginUser,
 };
