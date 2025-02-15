@@ -380,3 +380,65 @@ footer {
     border-color: #8d0303;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+/* Estilos para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+td[contenteditable="true"] {
+    background-color: #f9f9f9;
+}
+
+/* Estilos para los botones */
+#guardar, #exportar {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 5px;
+}
+
+#guardar:hover, #exportar:hover {
+    background-color: #218838;
+}
+
+/* Estilos para el selector de materias */
+.selector-materia {
+    margin: 20px 0;
+}
+
+.selector-materia label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.selector-materia select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Estilos para notas aprobadas y reprobadas */
+.aprobado {
+    background-color: #d4edda;
+}
+
+.reprobado {
+    background-color: #f8d7da;
+}
