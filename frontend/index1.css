@@ -347,3 +347,36 @@ footer {
 .logout-button:hover {
     background-color: #c0392b;
 }
+
+/* Estilos para el selector de materias */
+.selector-materia {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.selector-materia label {
+    font-size: 18px;
+    color: #333;
+    margin-right: 10px;
+}
+
+.selector-materia select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.selector-materia select:hover {
+    border-color: #fa0202;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.selector-materia select:focus {
+    outline: none;
+    border-color: #8d0303;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
