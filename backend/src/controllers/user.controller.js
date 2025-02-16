@@ -35,6 +35,17 @@ const createUser = [
     body('email').isEmail().withMessage('El email no es válido.'),
     body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres.'),
     body('ID_rol').notEmpty().isNumeric().withMessage('El ID de rol es obligatorio y debe ser un número.'),
+    body('curso').custom((value, { req }) => {
+        // Si el rol es "Gestor de notas" (ID_rol = 2), el campo curso no es requerido
+        if (req.body.ID_rol === "2") {
+            return true; // Ignorar la validación del curso
+        }
+        // Si no, el curso debe ser uno de los valores permitidos
+        if (!['7°1', '7°2', '7°3'].includes(value)) {
+            throw new Error('El curso seleccionado no es válido.');
+        }
+        return true;
+    }),
 
     async (req, res) => {
         const errors = validationResult(req);
@@ -42,7 +53,7 @@ const createUser = [
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { dni, nombre, apellido, email, password, ID_rol } = req.body;
+        const { dni, nombre, apellido, email, password, ID_rol, curso } = req.body;
 
         // Verifica que el rol exista en la tabla de roles
         const checkRoleQuery = 'SELECT * FROM roles WHERE ID_rol = ?';
@@ -56,13 +67,16 @@ const createUser = [
                 return res.status(404).json({ message: 'Rol no encontrado.' });
             }
 
+            // Si el rol es "Gestor de notas", no se requiere el campo curso
+            const cursoValue = ID_rol === "2" ? null : curso;
+
             // Si el rol existe, se procede a crear el usuario
             const createQuery = `
-                INSERT INTO usuarios (dni, nombre, apellido, email, contraseña, ID_rol) 
-                VALUES (?, ?, ?, ?, ?, ?);
+                INSERT INTO usuarios (dni, nombre, apellido, email, contraseña, ID_rol, curso) 
+                VALUES (?, ?, ?, ?, ?, ?, ?);
             `;
 
-            database.query(createQuery, [dni, nombre, apellido, email, password, ID_rol], (err, result) => {
+            database.query(createQuery, [dni, nombre, apellido, email, password, ID_rol, cursoValue], (err, result) => {
                 if (err) {
                     console.error('Error al crear el usuario:', err);
                     return res.status(500).json({ 
@@ -83,15 +97,15 @@ const createUser = [
 // Función para actualizar un usuario
 const updateUser = (req, res) => {
     const { id } = req.params;
-    const { dni, nombre, apellido, email, password, ID_rol } = req.body;
+    const { dni, nombre, apellido, email, password, ID_rol, curso } = req.body;
 
     const updateQuery = `
         UPDATE usuarios
-        SET dni = ?, nombre = ?, apellido = ?, email = ?, contraseña = ?, ID_rol = ?
+        SET dni = ?, nombre = ?, apellido = ?, email = ?, contraseña = ?, ID_rol = ?, curso = ?
         WHERE ID_usuario = ?;
     `;
 
-    database.query(updateQuery, [dni, nombre, apellido, email, password, ID_rol, id], (err, result) => {
+    database.query(updateQuery, [dni, nombre, apellido, email, password, ID_rol, curso, id], (err, result) => {
         if (err) {
             console.error('Error al actualizar el usuario:', err);
             return res.status(500).json({ message: 'Error al actualizar el usuario. Por favor, inténtalo de nuevo.' });
@@ -161,7 +175,8 @@ const loginUser = async (req, res) => {
                 nombre: user.nombre,
                 apellido: user.apellido,
                 email: user.email,
-                rol: user.nombre_rol
+                rol: user.nombre_rol,
+                curso: user.curso // Incluye el curso en la respuesta
             };
 
             res.status(200).json({ 

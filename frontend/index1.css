@@ -89,7 +89,7 @@ table {
 
 th {
     background-color: #fa0202;
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 td {
@@ -391,7 +391,7 @@ table {
 th, td {
     padding: 10px;
     text-align: center;
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
 }
 
 th {
@@ -407,7 +407,7 @@ td[contenteditable="true"] {
 #guardar, #exportar {
     padding: 10px 20px;
     background-color: #28a745;
-    color: white;
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -431,14 +431,14 @@ td[contenteditable="true"] {
 .selector-materia select {
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #0c0707;
 }
 
 /* Estilos para notas aprobadas y reprobadas */
 .aprobado {
-    background-color: #d4edda;
+    background-color: #03fe3d;
 }
 
 .reprobado {
-    background-color: #f8d7da;
+    background-color: #ff0015;
 }

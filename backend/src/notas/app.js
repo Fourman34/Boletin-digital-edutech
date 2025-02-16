@@ -7,7 +7,7 @@ const app = express();
 // Middleware para parsear JSON
 app.use(express.json());
 
-// Ruta para obtener notas
+// Ruta para obtener notas de una materia
 app.get("/obtener-notas", async (req, res) => {
     const { materia } = req.query;
 
