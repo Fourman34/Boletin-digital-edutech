@@ -1,8 +1,7 @@
-// notas.js
-
 // Variables globales
 const tabla = document.getElementById("tablaNotas");
 const selectorMateria = document.getElementById("materia");
+const selectorAlumno = document.getElementById("alumno"); // Selector de alumnos
 
 // Función para cargar las materias desde el backend
 async function cargarMaterias() {
@@ -21,12 +20,30 @@ async function cargarMaterias() {
     }
 }
 
+// Función para cargar los alumnos desde el backend
+async function cargarAlumnos() {
+    try {
+        const response = await fetch("http://localhost:3000/obtener-alumnos");
+        if (response.ok) {
+            const alumnos = await response.json();
+            selectorAlumno.innerHTML = alumnos.map(alumno => 
+                `<option value="${alumno.ID_usuario}">${alumno.nombre} ${alumno.apellido}</option>`
+            ).join("");
+        } else {
+            alert("Hubo un error al cargar los alumnos.");
+        }
+    } catch (error) {
+        console.error("Error al cargar los alumnos:", error);
+    }
+}
+
 // Función para cargar notas desde el backend
 async function cargarNotasDesdeServidor() {
     const materia = selectorMateria.value;
+    const ID_usuario = selectorAlumno.value; // Obtener el ID del alumno seleccionado
 
     try {
-        const response = await fetch(`http://localhost:3000/obtener-notas?materia=${materia}`);
+        const response = await fetch(`http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&materia=${materia}`);
         if (response.ok) {
             const notas = await response.json();
             actualizarTablaConNotas(notas);
@@ -149,14 +166,16 @@ async function enviarNotasAlServidor(notas) {
     }
 }
 
-// Evento para cargar las materias y notas al iniciar la página
+// Evento para cargar las materias, alumnos y notas al iniciar la página
 document.addEventListener("DOMContentLoaded", () => {
     cargarMaterias();
+    cargarAlumnos();
     cargarNotasDesdeServidor();
 });
 
-// Evento para cargar notas cuando se cambia la materia
+// Evento para cargar notas cuando se cambia la materia o el alumno
 selectorMateria.addEventListener("change", cargarNotasDesdeServidor);
+selectorAlumno.addEventListener("change", cargarNotasDesdeServidor);
 
 // Evento para guardar automáticamente al editar una celda
 tabla.addEventListener("input", async function (event) {

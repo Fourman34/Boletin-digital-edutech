@@ -97,10 +97,10 @@ app.get("/obtener-materias", async (req, res) => {
     }
 });
 
-// Ruta para obtener alumnos del curso "7°1"
+// Ruta para obtener alumnos del curso "7°1" con rol 1 (alumno)
 app.get("/obtener-alumnos", async (req, res) => {
     try {
-        const query = "SELECT * FROM usuarios WHERE curso = '7°1'"; // Filtrar por curso
+        const query = "SELECT * FROM usuarios WHERE ID_rol = 1 AND curso = '7°1'"; // Filtrar por rol 1 (alumno) y curso
         const [alumnos] = await database.query(query);
         res.status(200).json(alumnos);
     } catch (error) {

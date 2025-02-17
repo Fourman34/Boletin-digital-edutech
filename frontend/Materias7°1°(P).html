@@ -23,7 +23,7 @@
         </ul>
     </nav>    
     <main>
-        <h2>Bienvenido Lautaro Escobar</h2>
+        <h2>Bienvenido <span id="nombreUsuario"></span></h2> <!-- Mostrar el nombre del usuario -->
 
         <!-- Selector de alumnos -->
         <div class="selector-alumno">
@@ -81,7 +81,24 @@
         Cerrar sesión
     </button>
 
-    <script src="js/notas7°1°.js"></script>
-    <script src="js/notas.js"></script>
+    <script>
+        // Función para cargar el nombre del usuario desde localStorage
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+            if (usuario) {
+                document.getElementById('nombreUsuario').textContent = usuario.nombre;
+            } else {
+                alert("Debes iniciar sesión para acceder a esta página.");
+                window.location.href = 'login.html'; // Redirigir a la página de inicio de sesión
+            }
+        });
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            localStorage.removeItem('usuario'); // Eliminar el usuario de localStorage
+            window.location.href = 'login.html'; // Redirigir a la página de inicio de sesión
+        }
+    </script>
+    <script src="js/notas.js"></script> <!-- Solo necesitamos notas.js -->
 </body>
 </html>
