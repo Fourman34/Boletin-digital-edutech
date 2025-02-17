@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
-
-// Importa las rutas de usuarios
-const userRoutes = require('../routes/user.routes.js');  // Ruta corregida
+const database = require('./database'); // Ruta corregida
+const { verificarGestor } = require('../middlewares/authMiddleware'); // Ruta corregida
+const userRoutes = require('../routes/user.routes.js'); // Ruta corregida
+const notasRoutes = require('../routes/notas.routes.js'); // Ruta corregida
 
 const app = express();
 
@@ -13,7 +14,135 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rutas
-app.use('/user', userRoutes);  // Ruta para manejar usuarios
+app.use('/user', userRoutes); // Ruta para manejar usuarios
+app.use('/notas', notasRoutes); // Ruta para manejar notas
+
+// Ruta para obtener notas del alumno que inició sesión
+app.get("/obtener-notas", async (req, res) => {
+    const { ID_usuario } = req.query; // Obtener el ID_usuario del query
+
+    if (!ID_usuario) {
+        return res.status(400).json({ message: "ID_usuario es requerido." });
+    }
+
+    try {
+        const query = "SELECT * FROM notas WHERE ID_usuario = ?";
+        const [notas] = await database.query(query, [ID_usuario]);
+        res.status(200).json(notas);
+    } catch (error) {
+        console.error("Error al obtener las notas:", error);
+        res.status(500).json({ message: "Error al obtener las notas." });
+    }
+});
+
+// Ruta para guardar notas (protegida por el middleware verificarGestor)
+app.post("/guardar-notas", verificarGestor, async (req, res) => {
+    const notas = req.body;
+
+    try {
+        // Iniciar una transacción
+        await database.query("START TRANSACTION");
+
+        for (const nota of notas) {
+            const query = `
+                INSERT INTO notas (
+                    ID_usuario, materia, nota, fecha,
+                    primer_cuatrimestre_1, primer_cuatrimestre_2, primer_cuatrimestre_nota,
+                    segundo_cuatrimestre_1, segundo_cuatrimestre_2, segundo_cuatrimestre_nota,
+                    nota_final, nota_diciembre, nota_febrero_marzo
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            `;
+
+            const ID_usuario = await obtenerIdUsuarioPorNombre(nota.alumno);
+            const fecha = new Date().toISOString().split("T")[0]; // Fecha actual en formato YYYY-MM-DD
+
+            await database.query(query, [
+                ID_usuario,
+                nota.materia,
+                nota.nota || null, // Si no se proporciona, se guarda como NULL
+                fecha,
+                nota.primer_cuatrimestre_1,
+                nota.primer_cuatrimestre_2,
+                nota.primer_cuatrimestre_nota,
+                nota.segundo_cuatrimestre_1,
+                nota.segundo_cuatrimestre_2,
+                nota.segundo_cuatrimestre_nota,
+                nota.nota_final,
+                nota.nota_diciembre,
+                nota.nota_febrero_marzo,
+            ]);
+        }
+
+        // Confirmar la transacción
+        await database.query("COMMIT");
+
+        res.status(200).json({ message: "Notas guardadas correctamente." });
+    } catch (error) {
+        // Revertir la transacción en caso de error
+        await database.query("ROLLBACK");
+        console.error("Error al guardar las notas:", error);
+        res.status(500).json({ message: "Error al guardar las notas." });
+    }
+});
+
+// Ruta para obtener materias
+app.get("/obtener-materias", async (req, res) => {
+    try {
+        const query = "SELECT * FROM materias WHERE curso = '7°1'"; // Filtra por curso
+        const [materias] = await database.query(query);
+        res.status(200).json(materias);
+    } catch (error) {
+        console.error("Error al obtener las materias:", error);
+        res.status(500).json({ message: "Error al obtener las materias." });
+    }
+});
+
+// Ruta para obtener alumnos del curso "7°1"
+app.get("/obtener-alumnos", async (req, res) => {
+    try {
+        const query = "SELECT * FROM usuarios WHERE curso = '7°1'"; // Filtrar por curso
+        const [alumnos] = await database.query(query);
+        res.status(200).json(alumnos);
+    } catch (error) {
+        console.error("Error al obtener los alumnos:", error);
+        res.status(500).json({ message: "Error al obtener los alumnos." });
+    }
+});
+
+// Ruta para agregar una materia
+app.post("/agregar-materia", async (req, res) => {
+    const { nombre, curso } = req.body;
+
+    try {
+        const query = "INSERT INTO materias (nombre, curso) VALUES (?, ?)";
+        await database.query(query, [nombre, curso]);
+        res.status(201).json({ message: "Materia agregada correctamente." });
+    } catch (error) {
+        console.error("Error al agregar la materia:", error);
+        res.status(500).json({ message: "Error al agregar la materia." });
+    }
+});
+
+// Ruta para agregar un alumno
+app.post("/agregar-alumno", async (req, res) => {
+    const { nombre, apellido, curso } = req.body;
+
+    try {
+        const query = "INSERT INTO alumnos (nombre, apellido, curso) VALUES (?, ?, ?)";
+        await database.query(query, [nombre, apellido, curso]);
+        res.status(201).json({ message: "Alumno agregado correctamente." });
+    } catch (error) {
+        console.error("Error al agregar el alumno:", error);
+        res.status(500).json({ message: "Error al agregar el alumno." });
+    }
+});
+
+// Función para obtener el ID_usuario por nombre
+async function obtenerIdUsuarioPorNombre(nombre) {
+    const query = "SELECT ID_usuario FROM usuarios WHERE nombre = ?";
+    const [result] = await database.query(query, [nombre]);
+    return result.length > 0 ? result[0].ID_usuario : null;
+}
 
 // Servir archivos estáticos (frontend)
 const frontendPath = path.join(__dirname, '../../../frontend');

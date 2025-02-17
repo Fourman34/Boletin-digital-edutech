@@ -23,10 +23,10 @@
         </ul>
     </nav>    
     <main>
-        <h2>Bienvenido Lautaro Escobar</h2>
+        <h2>Bienvenido <span id="nombreAlumno"></span></h2> <!-- Mostrar el nombre del alumno -->
         
         <section>
-            <table>
+            <table id="tablaNotas">
                 <thead>
                     <tr>
                         <th>Materia</th>
@@ -36,42 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td data-label="Materia">Matemáticas</td>
-                        <td id="matematicas-p1">10</td>
-                        <td id="matematicas-p2">10</td>
-                        <td id="matematicas-final">10</td>
-                    </tr>
-                    <tr>
-                        <td data-label="Materia">Inglés</td>
-                        <td id="ingles-p1"></td>
-                        <td id="ingles-p2"></td>
-                        <td id="ingles-final"></td>
-                    </tr>
-                    <tr>
-                        <td data-label="Materia">Autogestión</td>
-                        <td id="autogestion-p1"></td>
-                        <td id="autogestion-p2"></td>
-                        <td id="autogestion-final"></td>
-                    </tr>
-                    <tr>
-                        <td data-label="Materia">Hardware</td>
-                        <td id="hardware-p1"></td>
-                        <td id="hardware-p2"></td>
-                        <td id="hardware-final"></td>
-                    </tr>
-                    <tr>
-                        <td data-label="Materia">Programación</td>
-                        <td id="programacion-p1"></td>
-                        <td id="programacion-p2"></td>
-                        <td id="programacion-final"></td>
-                    </tr>
-                    <tr>
-                        <td data-label="Materia">Redes</td>
-                        <td id="redes-p1"></td>
-                        <td id="redes-p2"></td>
-                        <td id="redes-final"></td>
-                    </tr>
+                    <!-- Las filas se llenarán dinámicamente con las notas del alumno -->
                 </tbody>
             </table>
         </section>
@@ -88,25 +53,55 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const materiasLink = document.getElementById('materiasLink');
-
             const usuario = JSON.parse(localStorage.getItem('usuario'));
 
             if (!usuario) {
                 materiasLink.style.display = 'none';
+                alert("Debes iniciar sesión para ver tus notas.");
+                window.location.href = 'login.html';
             } else {
                 materiasLink.style.display = 'block';
+                // Mostrar el nombre del alumno
+                document.getElementById('nombreAlumno').textContent = usuario.nombre;
+                // Cargar las notas del alumno
+                cargarNotasDelAlumno(usuario.ID_usuario);
             }
         });
 
+        // Función para cargar las notas del alumno
+        async function cargarNotasDelAlumno(ID_usuario) {
+            try {
+                const response = await fetch(`http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}`);
+                if (response.ok) {
+                    const notas = await response.json();
+                    actualizarTablaConNotas(notas);
+                } else {
+                    alert("Hubo un error al cargar las notas.");
+                }
+            } catch (error) {
+                console.error("Error al cargar las notas:", error);
+            }
+        }
+
+        // Función para actualizar la tabla con las notas
+        function actualizarTablaConNotas(notas) {
+            const tbody = document.querySelector("#tablaNotas tbody");
+            tbody.innerHTML = notas.map(nota => `
+                <tr>
+                    <td data-label="Materia">${nota.materia}</td>
+                    <td data-label="Primer Cuatrimestre">${nota.primer_cuatrimestre_nota || ''}</td>
+                    <td data-label="Segundo Cuatrimestre">${nota.segundo_cuatrimestre_nota || ''}</td>
+                    <td data-label="Calificación Final">${nota.nota_final || ''}</td>
+                </tr>
+            `).join("");
+        }
+
+        // Función para cerrar sesión
         function cerrarSesion() {
             localStorage.removeItem('usuario'); 
             window.location.href = 'matricularse.html'; 
         }
     </script>
-<script src="js/materiasEnlace.js"></script>
-    <script src=""></script> <!-- Incluir el script para cargar las notas -->
+    <script src="js/materiasEnlace.js"></script>
 </body>
 </html>
-
-
-  

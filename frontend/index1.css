@@ -73,18 +73,25 @@ nav ul li a {
 }
 
 /* Table styles */
-table, th, td {
-    width: 100%;
-    border: 1px solid #ddd;
-    border-collapse: collapse;
-    text-align: center;
-    padding: 15px;
+.table-container {
+    overflow-x: auto; /* Permite el desplazamiento horizontal en tablas grandes */
+    margin: 15px 0;
 }
 
 table {
-    margin: 15px auto;
+    width: auto; /* Evita que la tabla ocupe el 100% del ancho */
+    max-width: 100%; /* Asegura que la tabla no se salga del contenedor */
+    margin: 0 auto;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #000000;
+    min-width: 100px; /* Ajusta el ancho mínimo de las celdas */
 }
 
 th {
@@ -109,7 +116,7 @@ tfoot td {
     font-family: Arial, sans-serif;
     font-size: 14px;
     margin: 50px auto;
-    width: 20%;
+    width: 80%; /* Ajusta el ancho del calendario */
     border-collapse: collapse;
 }
 
@@ -275,11 +282,9 @@ footer {
         margin: 10px 0;
     }
 
-    .social-media-list li {
-        display: block;
-    }
-    nav ul li {
-        margin: 10px 0;
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
     }
 
     table, th, td {
@@ -311,6 +316,8 @@ footer {
         color: #333;
     }
 }
+
+/* Estilos adicionales */
 .social-media-list {
     list-style: none;
     padding: 0;
@@ -322,7 +329,7 @@ footer {
 }
 
 .social-icon {
-    width: 30px; /* Aumenta el tamaño de los iconos */
+    width: 30px;
     height: 30px;
     margin-right: 10px;
 }
@@ -348,7 +355,6 @@ footer {
     background-color: #c0392b;
 }
 
-/* Estilos para el selector de materias */
 .selector-materia {
     text-align: center;
     margin: 20px 0;
@@ -379,59 +385,6 @@ footer {
     outline: none;
     border-color: #8d0303;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Estilos para la tabla */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-th, td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #000000;
-}
-
-th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-td[contenteditable="true"] {
-    background-color: #f9f9f9;
-}
-
-/* Estilos para los botones */
-#guardar, #exportar {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: rgb(0, 0, 0);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px 5px;
-}
-
-#guardar:hover, #exportar:hover {
-    background-color: #218838;
-}
-
-/* Estilos para el selector de materias */
-.selector-materia {
-    margin: 20px 0;
-}
-
-.selector-materia label {
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-.selector-materia select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #0c0707;
 }
 
 /* Estilos para notas aprobadas y reprobadas */

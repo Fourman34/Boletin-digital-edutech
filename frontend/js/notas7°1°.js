@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const exportarBtn = document.getElementById("exportar");
     const selectorMateria = document.getElementById("materia");
 
-    // Cargar materias y notas al iniciar la página
+    // Cargar materias y alumnos al iniciar la página
     cargarMaterias();
-    cargarNotasDesdeServidor();
+    cargarAlumnos();
 
     // Validar que las notas estén entre 1 y 10
     tabla.addEventListener("input", function (event) {
@@ -57,43 +57,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Función para cargar notas desde el servidor
-    async function cargarNotasDesdeServidor() {
-        const materia = selectorMateria.value;
-
-        try {
-            const response = await fetch(`http://localhost:3000/obtener-notas?materia=${materia}`);
-            if (response.ok) {
-                const notas = await response.json();
-                actualizarTablaConNotas(notas);
-            } else {
-                alert("Hubo un error al cargar las notas desde el servidor.");
-            }
-        } catch (error) {
-            console.error("Error al cargar las notas:", error);
+// Función para cargar alumnos desde el servidor
+async function cargarAlumnos() {
+    try {
+        const response = await fetch("http://localhost:3000/obtener-alumnos");
+        if (response.ok) {
+            const alumnos = await response.json();
+            actualizarSelectorDeAlumnos(alumnos);
+        } else {
+            alert("Hubo un error al cargar los alumnos.");
         }
+    } catch (error) {
+        console.error("Error al cargar los alumnos:", error);
     }
+}
 
-    // Función para actualizar la tabla con las notas cargadas
-    function actualizarTablaConNotas(notas) {
-        const tbody = tabla.querySelector("tbody");
-        tbody.innerHTML = notas.map(nota => `
-            <tr>
-                <td colspan="3">${nota.alumno}</td>
-                <td contenteditable="true">${nota.primer_cuatrimestre_1}</td>
-                <td contenteditable="true">${nota.primer_cuatrimestre_2}</td>
-                <td contenteditable="true">${nota.primer_cuatrimestre_nota}</td>
-                <td contenteditable="true">${nota.segundo_cuatrimestre_1}</td>
-                <td contenteditable="true">${nota.segundo_cuatrimestre_2}</td>
-                <td contenteditable="true">${nota.segundo_cuatrimestre_nota}</td>
-                <td>${nota.nota_final}</td>
-                <td contenteditable="true">${nota.nota_diciembre}</td>
-                <td contenteditable="true">${nota.nota_febrero_marzo}</td>
-            </tr>
-        `).join("");
-        aplicarEstilosNotas();
-    }
-
+// Función para actualizar el selector de alumnos
+function actualizarSelectorDeAlumnos(alumnos) {
+    const selectorAlumno = document.getElementById("alumno");
+    selectorAlumno.innerHTML = alumnos.map(alumno => 
+        `<option value="${alumno.ID_usuario}">${alumno.nombre} ${alumno.apellido}</option>`
+    ).join("");
+}
     // Función para calcular la nota final
     function calcularNotaFinal(celda) {
         const fila = celda.parentElement;
@@ -117,33 +102,35 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Función para obtener las notas de la tabla
-    function obtenerNotasDeLaTabla() {
-        const notas = [];
-        const filas = tabla.querySelectorAll("tbody tr");
+   // Función para obtener las notas de la tabla
+function obtenerNotasDeLaTabla() {
+    const notas = [];
+    const filas = tabla.querySelectorAll("tbody tr");
+    const selectorAlumno = document.getElementById("alumno");
+    const ID_usuario = selectorAlumno.value; // Obtener el ID_usuario del alumno seleccionado
 
-        filas.forEach(fila => {
-            const celdas = fila.querySelectorAll("td[contenteditable]");
-            const alumno = fila.cells[0].textContent.trim();
+    filas.forEach(fila => {
+        const celdas = fila.querySelectorAll("td[contenteditable]");
+        const alumno = fila.cells[0].textContent.trim();
 
-            const filaNotas = {
-                alumno: alumno,
-                materia: selectorMateria.value,
-                primer_cuatrimestre_1: celdas[0].textContent.trim(),
-                primer_cuatrimestre_2: celdas[1].textContent.trim(),
-                primer_cuatrimestre_nota: celdas[2].textContent.trim(),
-                segundo_cuatrimestre_1: celdas[3].textContent.trim(),
-                segundo_cuatrimestre_2: celdas[4].textContent.trim(),
-                segundo_cuatrimestre_nota: celdas[5].textContent.trim(),
-                nota_final: fila.cells[9].textContent.trim(),
-                nota_diciembre: celdas[6].textContent.trim(),
-                nota_febrero_marzo: celdas[7].textContent.trim(),
-            };
-            notas.push(filaNotas);
-        });
+        const filaNotas = {
+            ID_usuario: ID_usuario, // Usar el ID_usuario del alumno seleccionado
+            materia: selectorMateria.value,
+            primer_cuatrimestre_1: celdas[0].textContent.trim(),
+            primer_cuatrimestre_2: celdas[1].textContent.trim(),
+            primer_cuatrimestre_nota: celdas[2].textContent.trim(),
+            segundo_cuatrimestre_1: celdas[3].textContent.trim(),
+            segundo_cuatrimestre_2: celdas[4].textContent.trim(),
+            segundo_cuatrimestre_nota: celdas[5].textContent.trim(),
+            nota_final: fila.cells[9].textContent.trim(),
+            nota_diciembre: celdas[6].textContent.trim(),
+            nota_febrero_marzo: celdas[7].textContent.trim(),
+        };
+        notas.push(filaNotas);
+    });
 
-        return notas;
-    }
+    return notas;
+}   
 
     // Función para enviar notas al servidor
     async function enviarNotasAlServidor(notas) {
@@ -189,5 +176,54 @@ document.addEventListener("DOMContentLoaded", function () {
         link.setAttribute("download", "notas.csv");
         document.body.appendChild(link);
         link.click();
+    }
+
+    // Función para agregar una materia
+    async function agregarMateria() {
+        const nombreMateria = document.getElementById("nombreMateria").value;
+
+        try {
+            const response = await fetch("http://localhost:3000/agregar-materia", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ nombre: nombreMateria, curso: "7°1" }),
+            });
+
+            if (response.ok) {
+                alert("Materia agregada correctamente.");
+                cargarMaterias(); // Recargar la lista de materias
+            } else {
+                alert("Hubo un error al agregar la materia.");
+            }
+        } catch (error) {
+            console.error("Error al agregar la materia:", error);
+        }
+    }
+
+    // Función para agregar un alumno
+    async function agregarAlumno() {
+        const nombreAlumno = document.getElementById("nombreAlumno").value;
+        const apellidoAlumno = document.getElementById("apellidoAlumno").value;
+
+        try {
+            const response = await fetch("http://localhost:3000/agregar-alumno", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ nombre: nombreAlumno, apellido: apellidoAlumno, curso: "7°1" }),
+            });
+
+            if (response.ok) {
+                alert("Alumno agregado correctamente.");
+                cargarAlumnos(); // Recargar la lista de alumnos
+            } else {
+                alert("Hubo un error al agregar el alumno.");
+            }
+        } catch (error) {
+            console.error("Error al agregar el alumno:", error);
+        }
     }
 });
