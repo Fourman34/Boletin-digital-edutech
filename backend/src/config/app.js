@@ -144,6 +144,26 @@ async function obtenerIdUsuarioPorNombre(nombre) {
     return result.length > 0 ? result[0].ID_usuario : null;
 }
 
+// Ruta para obtener los datos de un usuario por su ID
+app.get('/user/:id', async (req, res) => {
+    const { id } = req.params; // Obtener el ID del usuario desde los parámetros de la URL
+
+    try {
+        // Realizar una consulta a la base de datos para obtener el usuario por ID
+        const query = "SELECT * FROM usuarios WHERE ID_usuario = ?";
+        const [user] = await database.query(query, [id]);
+
+        if (user.length === 0) {
+            return res.status(404).json({ message: "Usuario no encontrado." });
+        }
+
+        res.status(200).json(user[0]); // Retornar los datos del usuario
+    } catch (error) {
+        console.error("Error al obtener el usuario:", error);
+        res.status(500).json({ message: "Error al obtener el usuario." });
+    }
+});
+
 // Servir archivos estáticos (frontend)
 const frontendPath = path.join(__dirname, '../../../frontend');
 app.use(express.static(frontendPath));
