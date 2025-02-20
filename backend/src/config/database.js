@@ -8,7 +8,7 @@ const pool = mysql.createPool({
     password: process.env.DB_PASSWORD, // Usar la variable de entorno DB_PASSWORD
     database: process.env.DB_NAME,   // Usar la variable de entorno DB_NAME
     waitForConnections: true,        // Esperar a que haya conexiones disponibles
-    connectionLimit: 10,             // Límite máximo de conexiones en el pool
+    connectionLimit: 20,             // Límite máximo de conexiones en el pool
     queueLimit: 0                    // Sin límite en la cola de espera
 });
 
