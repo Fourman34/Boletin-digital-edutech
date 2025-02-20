@@ -1,11 +1,13 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors'); // Importa el módulo CORS
 const database = require('./database'); // Ruta corregida
 const { verificarGestor } = require('../middlewares/authMiddleware'); // Ruta corregida
 const userRoutes = require('../routes/user.routes.js'); // Ruta corregida
 const notasRoutes = require('../routes/notas.routes.js'); // Ruta corregida
 
 const app = express();
+app.use(cors());
 
 app.set('port', 3000);
 

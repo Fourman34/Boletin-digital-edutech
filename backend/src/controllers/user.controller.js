@@ -142,6 +142,7 @@ const deleteUser = (req, res) => {
 // Función para iniciar sesión
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
+    console.log('Solicitud de inicio de sesión recibida:', { email, password }); // Log de depuración
 
     try {
         const query = `
@@ -151,42 +152,44 @@ const loginUser = async (req, res) => {
             WHERE email = ?;
         `;
 
-        database.query(query, [email], (err, result) => {
-            if (err) {
-                console.error('Error en la consulta a la base de datos:', err);
-                return res.status(500).json({ message: 'Error al iniciar sesión. Por favor, inténtalo de nuevo.' });
-            }
+        console.log('Ejecutando consulta SQL:', query); // Log de depuración
 
-            if (result.length === 0) {
-                return res.status(400).json({ message: 'Correo electrónico no registrado.' });
-            }
+        const [result] = await database.query(query, [email]); // Usar await para manejar la promesa
+        console.log('Resultado de la consulta:', result); // Log de depuración
 
-            const user = result[0];
+        if (result.length === 0) {
+            console.log('Correo electrónico no registrado:', email); // Log de depuración
+            return res.status(400).json({ message: 'Correo electrónico no registrado.' });
+        }
 
-            // Compara las contraseñas en texto plano
-            if (password !== user.contraseña) {
-                return res.status(400).json({ message: 'Contraseña incorrecta.' });
-            }
+        const user = result[0];
+        console.log('Usuario encontrado:', user); // Log de depuración
 
-            // Construye el objeto de respuesta
-            const usuarioResponse = {
-                ID_usuario: user.ID_usuario,
-                dni: user.dni,
-                nombre: user.nombre,
-                apellido: user.apellido,
-                email: user.email,
-                rol: user.nombre_rol,
-                curso: user.curso // Incluye el curso en la respuesta
-            };
+        // Compara las contraseñas en texto plano
+        if (password !== user.contraseña) {
+            console.log('Contraseña incorrecta para el usuario:', user.email); // Log de depuración
+            return res.status(400).json({ message: 'Contraseña incorrecta.' });
+        }
 
-            res.status(200).json({ 
-                success: true,
-                message: 'Inicio de sesión exitoso.', 
-                user: usuarioResponse // Devuelve el objeto usuarioResponse
-            });
+        // Construye el objeto de respuesta
+        const usuarioResponse = {
+            ID_usuario: user.ID_usuario,
+            dni: user.dni,
+            nombre: user.nombre,
+            apellido: user.apellido,
+            email: user.email,
+            rol: user.nombre_rol,
+            curso: user.curso // Incluye el curso en la respuesta
+        };
+
+        console.log('Inicio de sesión exitoso para el usuario:', usuarioResponse); // Log de depuración
+        res.status(200).json({ 
+            success: true,
+            message: 'Inicio de sesión exitoso.', 
+            user: usuarioResponse // Devuelve el objeto usuarioResponse
         });
     } catch (error) {
-        console.error('Error en el inicio de sesión:', error);
+        console.error('Error en el inicio de sesión:', error); // Log de depuración
         res.status(500).json({ message: 'Error en el servidor. Por favor, inténtalo de nuevo.' });
     }
 };

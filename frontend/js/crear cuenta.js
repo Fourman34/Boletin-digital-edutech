@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         submitButton.value = "Creando cuenta...";
 
         try {
+            // Mostrar los datos antes de enviarlos para depuración
             console.log("Datos enviados:", {
                 dni,
                 nombre,
@@ -112,10 +113,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 2000);
         } catch (error) {
             console.error('Error:', error);
+
+            // Mostrar detalles del error para depuración
             msgContainer.innerText = error.message || 'Hubo un error al procesar el registro. Verifica tu conexión a internet o intenta nuevamente.';
             msgContainer.style.color = 'red';
+
+            // Agregar detalles del error del servidor
+            if (error.response) {
+                const errorDetails = await error.response.text();  // Leemos la respuesta de error en texto
+                console.error('Detalles del error del servidor:', errorDetails);
+            }
         } finally {
-            // Restaurar el botón de envío
             submitButton.disabled = false;
             submitButton.value = "Crear Cuenta";
         }
