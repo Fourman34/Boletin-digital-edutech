@@ -48,6 +48,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     window.location.href = 'materias(A).html';
                 } else if (data.user.rol === 'Gestor de notas') {
                     window.location.href = 'gestor_de_notas.html';
+                } else if (data.user.rol === 'administrador'){
+                    window.location.href = 'administrador.html';
                 } else {
                     window.location.href = 'success.html';
                 }

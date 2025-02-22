@@ -90,6 +90,7 @@
             <li><a href="contactar.html">Contacto</a></li>
             <li><a href="matricularse.html">Matricularse</a></li>
             <li id="materiasLink"><a href="#" id="materiasEnlace">Materias</a></li>
+            <li id="adminLink"><a href="administrador.html">Administradores</a></li>
         </ul>
     </nav>
     <main>
@@ -116,6 +117,7 @@
                     <option value="" disabled selected>Selecciona tu rol</option>
                     <option value="1">Alumno</option>
                     <option value="2">Gestor de notas</option>
+                    <option value="3">Administrador</option>
                 </select>
 
                 <input class="buttons" type="submit" value="Crear Cuenta">
@@ -152,16 +154,16 @@
 
             // Escuchar cambios en el campo de rol
             rolSelect.addEventListener('change', (e) => {
-                const selectedRol = e.target.value;
+    const selectedRol = e.target.value;
 
-                // Deshabilitar el campo de curso si el rol es "Gestor de notas" (ID_rol = 2)
-                if (selectedRol === "2") {
-                    cursoSelect.disabled = true;
-                    cursoSelect.value = ""; // Limpiar el valor seleccionado
-                } else {
-                    cursoSelect.disabled = false;
-                }
-            });
+    // Deshabilitar el campo de curso si el rol es "Gestor de notas" (ID_rol = 2) o "Administrador" (ID_rol = 3)
+    if (selectedRol === "2" || selectedRol === "3") {
+        cursoSelect.disabled = true;
+        cursoSelect.value = ""; // Limpiar el valor seleccionado
+    } else {
+        cursoSelect.disabled = false;
+    }
+});
 
             // Manejar el envío del formulario
             formRegister.addEventListener('submit', async (e) => {
@@ -222,6 +224,8 @@
             });
         });
     </script>
+        <script src="js/materiasEnlace.js"></script>
+        <script src="js/matricularse.js"></script>
 </body>
 <br><br><br><br><br><br>
 </html>

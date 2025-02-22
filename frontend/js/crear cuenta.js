@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     rolSelect.addEventListener('change', (e) => {
         const selectedRol = e.target.value;
 
-        // Deshabilitar el campo de curso si el rol es "Gestor de notas" (ID_rol = 2)
-        if (selectedRol === "2") {
+        // Deshabilitar el campo de curso si el rol es "Gestor de notas" (ID_rol = 2) o "Administrador" (ID_rol = 3)
+        if (selectedRol === "2" || selectedRol === "3") {
             cursoSelect.disabled = true;
             cursoSelect.value = ""; // Limpiar el valor seleccionado
         } else {
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = e.target.password.value;
         const confirmPassword = e.target.confirmPassword.value;
         const ID_rol = e.target.rol.value;  // Obtener el valor del campo de selección de rol
-        const curso = ID_rol === "2" ? null : e.target.curso.value; // Ignorar curso si el rol es "Gestor de notas"
+        const curso = (ID_rol === "2" || ID_rol === "3") ? null : e.target.curso.value; // Ignorar curso si el rol es "Gestor de notas" o "Administrador"
 
         // Validación de campos obligatorios
         if (!dni || !nombre || !apellido || !email || !password || !confirmPassword || !ID_rol) {

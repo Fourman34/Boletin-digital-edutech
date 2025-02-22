@@ -166,6 +166,31 @@ app.get('/user/:id', async (req, res) => {
     }
 });
 
+// Ruta para obtener todos los usuarios
+app.get('/user', async (req, res) => {
+    try {
+        const query = "SELECT usuarios.*, roles.nombre_rol FROM usuarios JOIN roles ON usuarios.ID_rol = roles.ID_rol";
+        const [usuarios] = await database.query(query);
+        res.status(200).json(usuarios);
+    } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        res.status(500).json({ message: "Error al obtener los usuarios." });
+    }
+});
+
+// Ruta para eliminar un usuario
+app.delete('/user/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const query = "DELETE FROM usuarios WHERE ID_usuario = ?";
+        await database.query(query, [id]);
+        res.status(200).json({ message: "Usuario eliminado correctamente." });
+    } catch (error) {
+        console.error("Error al eliminar el usuario:", error);
+        res.status(500).json({ message: "Error al eliminar el usuario." });
+    }
+});
+
 // Servir archivos estáticos (frontend)
 const frontendPath = path.join(__dirname, '../../../frontend');
 app.use(express.static(frontendPath));

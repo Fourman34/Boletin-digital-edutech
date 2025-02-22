@@ -1,6 +1,18 @@
 const database = require('../config/database');
 const { body, validationResult } = require('express-validator');
 
+// Función para obtener todos los usuarios
+const getAllUsers = async (req, res) => {
+    try {
+        const query = "SELECT usuarios.*, roles.nombre_rol FROM usuarios JOIN roles ON usuarios.ID_rol = roles.ID_rol";
+        const [usuarios] = await database.query(query);
+        res.status(200).json(usuarios);
+    } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        res.status(500).json({ message: "Error al obtener los usuarios." });
+    }
+};
+
 // Función para leer un usuario
 const readUser = (req, res) => {
     const { id } = req.params;
@@ -36,8 +48,8 @@ const createUser = [
     body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres.'),
     body('ID_rol').notEmpty().isNumeric().withMessage('El ID de rol es obligatorio y debe ser un número.'),
     body('curso').custom((value, { req }) => {
-        // Si el rol es "Gestor de notas" (ID_rol = 2), el campo curso no es requerido
-        if (req.body.ID_rol === "2") {
+        // Si el rol es "Gestor de notas" (ID_rol = 2) o "Administrador" (ID_rol = 3), el campo curso no es requerido
+        if (req.body.ID_rol === "2" || req.body.ID_rol === "3") {
             return true; // Ignorar la validación del curso
         }
         // Si no, el curso debe ser uno de los valores permitidos
@@ -71,8 +83,8 @@ const createUser = [
                 return res.status(404).json({ message: 'Rol no encontrado.' });
             }
 
-            // Si el rol es "Gestor de notas", no se requiere el campo curso
-            const cursoValue = ID_rol === "2" ? null : curso;
+            // Si el rol es "Gestor de notas" o "Administrador", no se requiere el campo curso
+            const cursoValue = (ID_rol === "2" || ID_rol === "3") ? null : curso;
 
             // Si el rol existe, se procede a crear el usuario
             const createQuery = `
@@ -98,7 +110,6 @@ const createUser = [
         }
     }
 ];
-
 // Función para actualizar un usuario
 const updateUser = (req, res) => {
     const { id } = req.params;
@@ -125,23 +136,16 @@ const updateUser = (req, res) => {
 };
 
 // Función para eliminar un usuario
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
     const { id } = req.params;
-
-    const deleteQuery = 'DELETE FROM usuarios WHERE ID_usuario = ?;';
-
-    database.query(deleteQuery, [id], (err, result) => {
-        if (err) {
-            console.error('Error al eliminar el usuario:', err);
-            return res.status(500).json({ message: 'Error al eliminar el usuario. Por favor, inténtalo de nuevo.' });
-        }
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Usuario no encontrado.' });
-        }
-
-        res.status(200).json({ message: 'Usuario eliminado con éxito.' });
-    });
+    try {
+        const query = "DELETE FROM usuarios WHERE ID_usuario = ?";
+        await database.query(query, [id]);
+        res.status(200).json({ message: "Usuario eliminado correctamente." });
+    } catch (error) {
+        console.error("Error al eliminar el usuario:", error);
+        res.status(500).json({ message: "Error al eliminar el usuario." });
+    }
 };
 
 // Función para iniciar sesión
@@ -206,4 +210,5 @@ module.exports = {
     updateUser,
     deleteUser,
     loginUser,
+    getAllUsers, // Asegúrate de exportar esta función
 };
