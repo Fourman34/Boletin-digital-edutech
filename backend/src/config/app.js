@@ -1,13 +1,16 @@
 const express = require('express');
+const jwt = require("jsonwebtoken");
 const path = require('path');
-const cors = require('cors'); // Importa el módulo CORS
-const database = require('./database'); // Ruta corregida
-const { verificarGestor } = require('../middlewares/authMiddleware'); // Ruta corregida
+const cors = require('cors');
+const database = require('./database');
+const { verificarGestor } = require('../middlewares/authMiddleware');
 const userRoutes = require('../routes/user.routes.js');
-const notasRoutes = require('../routes/notas.routes.js'); // Ruta corregida
+const notasRoutes = require('../routes/notas.routes.js');
 
 const app = express();
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.set('port', 3000);
 
@@ -15,9 +18,41 @@ app.set('port', 3000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Ruta para iniciar sesión
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Verificar las credenciales del usuario (esto es un ejemplo)
+        const usuario = await verificarCredenciales(email, password);
+
+        if (!usuario) {
+            return res.status(401).json({ message: "Credenciales inválidas." });
+        }
+
+        // Crear el payload del token (datos que se incluirán en el token)
+        const payload = {
+            id: usuario.id,
+            nombre: usuario.nombre,
+            rol: usuario.rol, // Asegúrate de incluir el rol del usuario
+        };
+
+        // Firmar el token con la clave secreta
+        const token = jwt.sign(payload, "tu_secreto", { expiresIn: "1h" }); // El token expira en 1 hora
+
+        // Enviar el token al cliente
+        res.status(200).json({ token });
+    } catch (error) {
+        console.error("Error en el inicio de sesión:", error);
+        res.status(500).json({ message: "Error en el servidor." });
+    }
+});
+
 // Rutas
-app.use('/user', userRoutes); // Ruta para manejar usuarios
-app.use('/notas', notasRoutes); // Ruta para manejar notas
+app.use('/user', userRoutes);
+app.use('/notas', notasRoutes);
+
+// Resto del código...
 
 // Ruta para obtener notas del alumno que inició sesión
 app.get("/obtener-notas", async (req, res) => {

@@ -146,11 +146,13 @@ function obtenerNotasDeLaTabla() {
 
 // Función para enviar notas al servidor
 async function enviarNotasAlServidor(notas) {
+    const token = localStorage.getItem('token'); // Obtener el token del localStorage
     try {
         const response = await fetch("http://localhost:3000/guardar-notas", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Incluir el token en los encabezados
             },
             body: JSON.stringify(notas),
         });
@@ -165,7 +167,6 @@ async function enviarNotasAlServidor(notas) {
         return "error";
     }
 }
-
 // Evento para cargar las materias, alumnos y notas al iniciar la página
 document.addEventListener("DOMContentLoaded", () => {
     cargarMaterias();

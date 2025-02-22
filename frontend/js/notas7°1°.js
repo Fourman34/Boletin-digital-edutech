@@ -179,17 +179,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para enviar notas al servidor
     async function enviarNotasAlServidor(notas) {
+        const token = localStorage.getItem('token'); // Obtener el token del localStorage
+        if (!token) {
+            alert("No se encontró el token. Por favor, inicia sesión nuevamente.");
+            window.location.href = 'login.html'; // Redirigir al usuario a la página de inicio de sesión
+            return "error";
+        }
+    
         try {
             const response = await fetch("http://localhost:3000/guardar-notas", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // Incluir el token en los encabezados
                 },
                 body: JSON.stringify(notas),
             });
-
+    
             if (response.ok) {
                 return "éxito";
+            } else if (response.status === 401) {
+                alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
+                localStorage.removeItem('token'); // Eliminar el token expirado
+                window.location.href = 'login.html'; // Redirigir al usuario a la página de inicio de sesión
+                return "error";
             } else {
                 return "error";
             }
@@ -198,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return "error";
         }
     }
-
     // Función para exportar notas a CSV
     function exportarACSV() {
         const filas = tabla.querySelectorAll("tbody tr");
