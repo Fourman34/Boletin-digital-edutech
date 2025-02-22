@@ -1,18 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="imagenes/logo.webp" />
     <link rel="stylesheet" href="index1.css">
     <title>Contactar</title>
+    <style>
+        /* Estilos específicos para los íconos de redes sociales */
+        .social-media-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .social-media-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .social-icon {
+            width: 30px; /* Tamaño reducido de los íconos */
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .social-media-list a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .social-media-list a:hover {
+            color: #fa0202; /* Color rojo al pasar el mouse */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <img id="Logo" src="imagenes/logo.webp" alt="Logo" height="90" width="90">
+        <img id="Logo" src="imagenes/logo.webp" alt="Logo del Colegio" height="90" width="90">
         <h1>Colegio Provincial Dr. Ernesto Guevara</h1>
     </header>
-    
+
     <nav>
         <ul>
             <li><a href="index1.html">Inicio</a></li>
@@ -24,7 +54,7 @@
     </nav>
 
     <main>
-        <section>
+        <section class="contact-section">
             <h2>Redes Sociales</h2>
             <ul class="social-media-list">
                 <li>
@@ -46,7 +76,7 @@
             </ul>
         </section>
 
-        <section>
+        <section class="contact-section">
             <h2>Dirección del Colegio</h2>
             <ul class="social-media-list">
                 <li>
@@ -60,14 +90,14 @@
     <footer>
         <p>&copy; 2024 EduTech. Derechos Reservados.</p>
     </footer>
-    <button onclick="cerrarSesion()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
+
+    <button onclick="cerrarSesion()" class="logout-button">
         Cerrar sesión
     </button>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const materiasLink = document.getElementById('materiasLink');
-
             const usuario = JSON.parse(localStorage.getItem('usuario'));
 
             if (!usuario) {

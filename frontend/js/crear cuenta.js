@@ -91,11 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     nombre,
                     apellido,
                     email,
-                    password, // Asegúrate de encriptar la contraseña en el backend si no lo estás haciendo aquí
-                    ID_rol,  // Enviar el rol seleccionado
-                    curso,   // Enviar el curso seleccionado (puede ser null)
+                    password,
+                    ID_rol,
+                    curso,
                 }),
             });
+
+            console.log('Respuesta del servidor:', response); // Log de depuración
 
             if (!response.ok) {
                 const errorData = await response.json(); // Leer el mensaje de error del backend
@@ -103,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const data = await response.json();
+            console.log('Datos de la respuesta:', data); // Log de depuración
 
             msgContainer.innerText = 'Cuenta creada exitosamente.';
             msgContainer.style.color = 'green';

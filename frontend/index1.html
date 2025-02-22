@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    
-    <link rel="icon" href="imagenes/logo.webp">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Colegio Provincial Dr. Ernesto Guevara  </title>
+    <meta name="description" content="Página oficial del Colegio Provincial Dr. Ernesto Guevara. Información sobre historia, calendario, contacto y matrículas.">
+    <meta name="keywords" content="colegio, educación, técnica, Río Grande, Ernesto Guevara">
+    <meta name="author" content="Colegio Provincial Dr. Ernesto Guevara">
+    <link rel="icon" href="imagenes/logo.webp">
+    <title>Colegio Provincial Dr. Ernesto Guevara</title>
     <link rel="stylesheet" href="index1.css">
 </head>
 <body>
     <header>
-        <img id="Logo" src="imagenes/logo.webp" height="90" width="90" > 
-       
-         <h1> Colegio Provincial Dr. Ernesto Guevara</h1> 
-    </header> 
+        <img id="Logo" src="imagenes/logo.webp" alt="Logo del Colegio" height="90" width="90">
+        <h1>Colegio Provincial Dr. Ernesto Guevara</h1>
+    </header>
     <nav>
         <ul>
             <li><a href="index1.html">Inicio</a></li>
@@ -24,123 +25,124 @@
         </ul>
     </nav>
     <main>
-        <portada>
+        <!-- Sección de Historia -->
+        <section id="historia">
             <h2>Historia del colegio</h2>
-            <span class="postdate"> marzo 21, 2005</span>
-           <marquee>
-                <img src="imagenes/images.jpeg" height="350" width="450">
-                <img src="imagenes/guevara-4.jpeg" height="350" width="350">
-                <img src="imagenes/guevara-3.png" height="350" width="450">
-            </marquee>
-        </portada>
-        
-        
+            <span class="postdate">marzo 21, 2005</span>
+            <div class="image-scroll">
+                <img src="imagenes/images.jpeg" alt="Imagen del colegio" height="350" width="450">
+                <img src="imagenes/guevara-4.jpeg" alt="Imagen del colegio" height="350" width="350">
+                <img src="imagenes/guevara-3.png" alt="Imagen del colegio" height="350" width="450">
+            </div>
+        </section>
+
+        <!-- Sección de Información Principal -->
         <section id="home" class="centered-images">
             <p class="parrafo">El Colegio Técnico Dr. Ernesto Guevara de Río Grande...</p>
-            <img src="imagenes/colegio viejo.png">
-            <p style="text-align: center;"> <p-ph class="parrafo">El Colegio Técnico Dr. Ernesto Guevara de Río Grande, fundado con el propósito de ofrecer una educación técnica de calidad, se ha destacado a lo largo de su historia por su compromiso con la formación integral de sus estudiantes. Con una amplia gama de programas y especializaciones, el colegio no solo proporciona conocimientos técnicos avanzados, sino que también fomenta valores de responsabilidad, innovación y trabajo en equipo. Su legado histórico está marcado por la excelencia académica y la constante adaptación a las necesidades del mercado laboral, preparando a sus alumnos para enfrentar con éxito los desafíos del mundo profesional y contribuir al desarrollo de la comunidad.</p>
-            <img src="imagenes/Colegiofuera.png" height="700" width="800">
+            <img src="imagenes/colegio viejo.png" alt="Imagen del colegio antiguo">
+            <p class="parrafo">El Colegio Técnico Dr. Ernesto Guevara de Río Grande, fundado con el propósito de ofrecer una educación técnica de calidad, se ha destacado a lo largo de su historia por su compromiso con la formación integral de sus estudiantes. Con una amplia gama de programas y especializaciones, el colegio no solo proporciona conocimientos técnicos avanzados, sino que también fomenta valores de responsabilidad, innovación y trabajo en equipo. Su legado histórico está marcado por la excelencia académica y la constante adaptación a las necesidades del mercado laboral, preparando a sus alumnos para enfrentar con éxito los desafíos del mundo profesional y contribuir al desarrollo de la comunidad.</p>
+            <img src="imagenes/Colegiofuera.png" alt="Imagen del colegio" height="700" width="800">
+        </section>
+
+        <!-- Sección de Compromisos -->
+        <section id="compromisos">
+            <h2>Compromisos</h2>
+            <p class="compromisos-intro">Aprobado por resolución M. ED N° 1928/15 el Acuerdo Escolar de Convivencia de la comunidad educativa del colegio Ernesto Guevara, basado en los principios de Prosocialidad, Retención e Inclusión.</p>
+
+            <div class="compromisos-grid">
+                <!-- Compromisos del Equipo de Gestión -->
+                <article class="compromiso-card">
+                    <h3>Del equipo de gestión</h3>
+                    <ul>
+                        <li>Gestionar con responsabilidad-dirigir propiciando un clima democrático.</li>
+                        <li>Establecer canales de comunicación fluidos y confiables.</li>
+                        <li>Garantizar espacios de diálogo a todos los miembros de la comunidad.</li>
+                        <li>Ser respetuosos y amables con todo el personal de la institución.</li>
+                        <li>Como organizadores de la tarea pedagógica; mantener actualizadas las propuestas pedagógicas.</li>
+                    </ul>
+                </article>
+
+                <!-- Compromisos del Equipo Docente -->
+                <article class="compromiso-card">
+                    <h3>Del equipo docente</h3>
+                    <ul>
+                        <li>Informarse sobre sus estudiantes y mantener una comunicación fluida con el grupo clase a cargo.</li>
+                        <li>Acompañar a sus estudiantes en el saludo inicial y arriado de la Bandera.</li>
+                        <li>Cumplir y hacer cumplir las normas institucionales.</li>
+                        <li>Evitar el uso de celular durante el dictado de clase. En caso de necesidad de uso, se informará al curso con antelación.</li>
+                        <li>Comunicar de manera fehaciente los progresos y/o dificultades (pedagógicas, actitudinales, sociales) de los estudiantes en el cuaderno de comunicaciones.</li>
+                    </ul>
+                </article>
+
+                <!-- Compromisos de Preceptores/as y Tutores/as -->
+                <article class="compromiso-card">
+                    <h3>De los preceptores/as y tutores/as</h3>
+                    <ul>
+                        <li>Cumplir y hacer cumplir las normas institucionales.</li>
+                        <li>Mantener una comunicación fluida con los familiares de los estudiantes como nexo entre las familias y el colegio.</li>
+                        <li>Comunicar al equipo directivo sobre situaciones que puedan ser significativas dentro de la institución.</li>
+                        <li>Colaborar en las reuniones de información y proyectos.</li>
+                        <li>Ser respetuosos y amables con todo el personal de la institución.</li>
+                    </ul>
+                </article>
+
+                <!-- Compromisos del Personal Administrativo -->
+                <article class="compromiso-card">
+                    <h3>Del personal administrativo</h3>
+                    <ul>
+                        <li>Comunicar en tiempo y forma las novedades institucionales con celeridad y eficiencia para agilizar los procesos de trámites internos.</li>
+                        <li>Cumplir con las normas institucionales.</li>
+                        <li>Ser respetuosos y amables con todo el personal de la institución.</li>
+                    </ul>
+                </article>
+
+                <!-- Compromisos del Personal de Maestranza -->
+                <article class="compromiso-card">
+                    <h3>Del personal de maestranza</h3>
+                    <ul>
+                        <li>Cumplir con las tareas designadas a fin de colaborar con la higiene del edificio y mobiliario escolar.</li>
+                        <li>Ser respetuosos y amables con todo el personal de la institución.</li>
+                    </ul>
+                </article>
+
+                <!-- Compromisos de las Familias, Padres y/o Tutores -->
+                <article class="compromiso-card">
+                    <h3>De las familias, padres y/o tutores</h3>
+                    <ul>
+                        <li>Dialogar con nuestros hijos y acompañarlos en sus actividades escolares respetando el desarrollo de su autonomía.</li>
+                        <li>Concurrir a las reuniones o citaciones del colegio.</li>
+                        <li>Establecer una comunicación fluida con el colegio, informando las novedades que pudieran ser significativas para la institución.</li>
+                        <li>Participar de las actividades escolares y colaborar con la institución en la medida de nuestras posibilidades.</li>
+                    </ul>
+                </article>
+
+                <!-- Compromisos de los Estudiantes -->
+                <article class="compromiso-card">
+                    <h3>De los estudiantes</h3>
+                    <ul>
+                        <li>Respetar y propiciar el respeto de nuestros símbolos patrios.</li>
+                        <li>Cumplir con los horarios de ingreso y participar del izamiento de la Bandera cuando se me solicite.</li>
+                        <li>Ser respetuoso y compañero con mis pares.</li>
+                        <li>Ser respetuoso y cortés con el personal de maestranza y su trabajo colaborando en la higiene del edificio y mobiliario escolar.</li>
+                    </ul>
+                </article>
+            </div>
         </section>
     </main>
 
-    <div class="container">
-        <h2>Compromisos</h2>
-        <p>Aprobado por resolución M. ED N° 1928/15 el Acuerdo Escolar de Convivencia de la comunidad educativa del colegio Ernesto Guevara, basado en los principios de Prosocialidad, Retención e Inclusión.</p>
-    
-        <h2>Del equipo de gestión</h2>
-        <ul>
-            <li>Gestionar con responsabilidad-dirigir propiciando un clima democrático.</li>
-            <li>Establecer canales de comunicación fluidos y confiables.</li>
-            <li>Garantizar espacios de diálogo a todos los miembros de la comunidad.</li>
-            <li>Ser respetuosos y amables con todo el personal de la institución.</li>
-            <li>Como organizadores de la tarea pedagógica; mantener actualizadas las propuestas pedagógicas.</li>
-        </ul>
-    
-        <h2>Del equipo docente</h2>
-        <ul>
-            <li>Informarse sobre sus estudiantes y mantener una comunicación fluida con el grupo clase a cargo.</li>
-            <li>Acompañar a sus estudiantes en el saludo inicial y arriado de la Bandera.</li>
-            <li>Cumplir y hacer cumplir las normas institucionales.</li>
-            <li>Evitar el uso de celular durante el dictado de clase. En caso de necesidad de uso, se informará al curso con antelación.</li>
-            <li>Comunicar de manera fehaciente los progresos y/o dificultades (pedagógicas, actitudinales, sociales) de los estudiantes en el cuaderno de comunicaciones.</li>
-            <li>Establecer pautas de trabajo claras con su grupo de estudiantes respetando los tiempos individuales.</li>
-            <li>Intervenir y poner todo el grupo al tanto de las tareas y/o sonrisas de la institución.</li>
-            <li>Intervenir con eficacia y diligencia en la resolución de posibles conflictos en el curso.</li>
-            <li>Registrar en el cuaderno de comunicaciones los logros y/o novedades en forma precisa.</li>
-            <li>Establecer un trato respetuoso y afable con los estudiantes.</li>
-            <li>Ser respetuosos y amables con todo el personal de la institución.</li>
-        </ul>
-    
-        <h2>De los preceptores/as y tutores/as</h2>
-        <ul>
-            <li>Cumplir y hacer cumplir las normas institucionales.</li>
-            <li>Mantener una comunicación fluida con los familiares de los estudiantes como nexo entre las familias y el colegio.</li>
-            <li>Comunicar al equipo directivo sobre situaciones que puedan ser significativas dentro de la institución.</li>
-            <li>Colaborar en las reuniones de información y proyectos.</li>
-            <li>Ser respetuosos y amables con todo el personal de la institución.</li>
-        </ul>
-    
-        <h2>Del personal administrativo</h2>
-        <ul>
-            <li>Comunicar en tiempo y forma las novedades institucionales con celeridad y eficiencia para agilizar los procesos de trámites internos.</li>
-            <li>Cumplir con las normas institucionales.</li>
-            <li>Ser respetuosos y amables con todo el personal de la institución.</li>
-        </ul>
-    
-        <h2>Del personal de maestranza</h2>
-        <ul>
-            <li>Cumplir con las tareas designadas a fin de colaborar con la higiene del edificio y mobiliario escolar.</li>
-            <li>Ser respetuosos y amables con todo el personal de la institución.</li>
-        </ul>
-    
-        <h2>De las familias, padres y/o tutores</h2>
-        <ul>
-            <li>Dialogar con nuestros hijos y acompañarlos en sus actividades escolares respetando el desarrollo de su autonomía.</li>
-            <li>Concurrir a las reuniones o citaciones del colegio.</li>
-            <li>Establecer una comunicación fluida con el colegio, informando las novedades que pudieran ser significativas para la institución.</li>
-            <li>Participar de las actividades escolares y colaborar con la institución en la medida de nuestras posibilidades.</li>
-            <li>Colaborar con las medidas disciplinarias que se dictan cuando nuestro hijo falte a las normas institucionales.</li>
-            <li>Reparar los daños materiales que nuestro hijo pudiera ocasionar al edificio o por uso indebido del mobiliario, equipamiento tecnológico o material didáctico.</li>
-            <li>Ser respetuosos y amables con todo el personal de la institución.</li>
-        </ul>
-    
-        <h2>De los estudiantes</h2>
-        <ul>
-            <li>Respetar y propiciar el respeto de nuestros símbolos patrios.</li>
-            <li>Cumplir con los horarios de ingreso y participar del izamiento de la Bandera cuando se me solicite.</li>
-            <li>Ser respetuoso y compañero con mis pares.</li>
-            <li>Ser respetuoso y cortés con el personal de maestranza y su trabajo colaborando en la higiene del edificio y mobiliario escolar.</li>
-            <li>Colaborar con los docentes durante el dictado de clases evitando provocar distracciones en mis compañeros.</li>
-            <li>Asistir perfectamente higienizado/a y con vestimenta apropiada. Evitando ropa que pudiera resultar provocativa o con mensajes discriminatorios o inapropiados tanto en lengua castellana como extranjera.</li>
-            <li>Mantendré mi celular o aparatos electrónicos apagados durante el dictado de clases.</li>
-            <li>No utilizaré gorra, capucha, pañuelo dentro del edificio escolar.</li>
-            <li>En situaciones de conflicto o agresión informaré a mi tutor/preceptor o adulto de la institución y no incurriré en actos de violencia física o verbal.</li>
-            <li>Respetaré y solicitaré a mis compañeros toda la comunidad.</li>
-            <li>Respetaré el reglamento escolar.</li>
-            <li>Colaboraré en las actividades curriculares y extracurriculares con los docentes de la institución.</li>
-            <li>Seré respetuoso y amable con todo el personal de la institución.</li>
-        </ul>
-    </div>
-    
-    <br>
-    <br>
-    <br>
-    <br>
-<br>
-<br>
-<br>
-<br>
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2024 EduTech. Derechos Resevados.</p>
+        <p>&copy; 2024 EduTech. Derechos Reservados.</p>
     </footer>
-    <button onclick="cerrarSesion()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
+
+    <!-- Botón de Cerrar Sesión -->
+    <button onclick="cerrarSesion()" class="logout-button">
         Cerrar sesión
     </button>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const materiasLink = document.getElementById('materiasLink');
-
             const usuario = JSON.parse(localStorage.getItem('usuario'));
 
             if (!usuario) {
@@ -155,8 +157,5 @@
             window.location.href = 'matricularse.html'; 
         }
     </script>
-
-<script src="js/materiasEnlace.js"></script>
-
 </body>
 </html>

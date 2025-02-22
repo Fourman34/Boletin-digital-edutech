@@ -1,42 +1,44 @@
-/* General styles */
+/* ==================== GENERAL STYLES ==================== */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    line-height: 1.6;
+    color: #333;
 }
 
 h1, h2 {
     text-align: center;
-    color: #333;
 }
 
 h1 {
-    font-size: 50px;
+    font-size: 2.5rem;
     font-family: "Times New Roman", serif;
     font-weight: bold;
     letter-spacing: 2px;
-    margin-top: -80px;
+    margin-top: 20px;
 }
 
 h2 {
-    font-size: 30px;
-    font-family: sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
 }
 
 .parrafo {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 25px;
+    font-size: 1.2rem;
     padding: 10px;
     text-align: left;
+    margin: 20px 0;
 }
 
-/* Header styles */
+/* ==================== HEADER ==================== */
 header {
     background-color: #fa0202;
     color: white;
     text-align: center;
-    padding: 10px 0;
+    padding: 20px 0;
 }
 
 header img {
@@ -45,11 +47,11 @@ header img {
 }
 
 header h1 {
-    margin: 0;
-    font-size: 36px;
+    margin: 10px 0 0;
+    font-size: 2.5rem;
 }
 
-/* Navigation */
+/* ==================== NAVIGATION ==================== */
 nav {
     background-color: #8d0303;
     padding: 10px 0;
@@ -61,6 +63,7 @@ nav ul {
     margin: 0;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav ul li {
@@ -70,17 +73,32 @@ nav ul li {
 nav ul li a {
     color: white;
     text-decoration: none;
+    font-size: 1.1rem;
 }
 
-/* Table styles */
+/* ==================== IMAGE SCROLL ==================== */
+.image-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    margin: 20px 0;
+}
+
+.image-scroll img {
+    margin-right: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== TABLES ==================== */
 .table-container {
-    overflow-x: auto; /* Permite el desplazamiento horizontal en tablas grandes */
+    overflow-x: auto;
     margin: 15px 0;
 }
 
 table {
-    width: auto; /* Evita que la tabla ocupe el 100% del ancho */
-    max-width: 100%; /* Asegura que la tabla no se salga del contenedor */
+    width: auto;
+    max-width: 100%;
     margin: 0 auto;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -91,7 +109,7 @@ th, td {
     padding: 10px;
     text-align: center;
     border: 1px solid #000000;
-    min-width: 100px; /* Ajusta el ancho mínimo de las celdas */
+    min-width: 100px;
 }
 
 th {
@@ -111,12 +129,12 @@ tfoot td {
     font-weight: bold;
 }
 
-/* Calendar styles */
+/* ==================== CALENDAR ==================== */
 #calendar {
     font-family: Arial, sans-serif;
     font-size: 14px;
     margin: 50px auto;
-    width: 80%; /* Ajusta el ancho del calendario */
+    width: 80%;
     border-collapse: collapse;
 }
 
@@ -152,33 +170,7 @@ tfoot td {
     font-weight: bold;
 }
 
-#calendar caption div {
-    float: left;
-}
-
-#calendar caption div:nth-child(2) {
-    float: right;
-}
-
-#calendar caption div a {
-    cursor: pointer;
-    color: #fff;
-}
-
-#calendar caption:after {
-    content: "";
-    display: block;
-    clear: both;
-}
-
-/* Buttons */
-main .botones {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-}
-
+/* ==================== BUTTONS ==================== */
 .boton-container {
     margin: 20px;
     position: relative;
@@ -216,18 +208,19 @@ main .botones {
     pointer-events: none;
 }
 
-/* Footer */
+/* ==================== FOOTER ==================== */
 footer {
     background-color: #fa0202;
     color: white;
     text-align: center;
     padding: 20px 0;
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
+    margin-top: 40px;
 }
 
-/* Forms */
+/* ==================== FORMS ==================== */
 .form-login {
     width: 300px;
     margin: 50px auto;
@@ -266,12 +259,25 @@ footer {
     background-color: #8d0303;
 }
 
-.form-login a {
-    color: #fa0202;
-    text-decoration: none;
+/* ==================== LOGOUT BUTTON ==================== */
+.logout-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
-/* Adaptación para pantallas pequeñas (móvil) */
+.logout-button:hover {
+    background-color: #cc0000;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 768px) {
     nav ul {
         flex-direction: column;
@@ -282,18 +288,31 @@ footer {
         margin: 10px 0;
     }
 
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
+    .image-scroll {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-scroll img {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .parrafo {
+        font-size: 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
     }
 
     table, th, td {
         display: block;
         width: 100%;
-    }
-
-    tr {
-        margin-bottom: 10px;
     }
 
     th {
@@ -317,81 +336,63 @@ footer {
     }
 }
 
-/* Estilos adicionales */
-.social-media-list {
-    list-style: none;
-    padding: 0;
-    text-align: center;
-}
-
-.social-media-list li {
-    margin: 10px 0;
-}
-
-.social-icon {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-}
-
-.success-message {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.logout-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.logout-button:hover {
-    background-color: #c0392b;
-}
-
-.selector-materia {
-    text-align: center;
-    margin: 20px 0;
-}
-
-.selector-materia label {
-    font-size: 18px;
-    color: #333;
-    margin-right: 10px;
-}
-
-.selector-materia select {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.selector-materia select:hover {
-    border-color: #fa0202;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.selector-materia select:focus {
-    outline: none;
-    border-color: #8d0303;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Estilos para notas aprobadas y reprobadas */
+/* ==================== UTILITY CLASSES ==================== */
 .aprobado {
     background-color: #03fe3d;
 }
 
 .reprobado {
     background-color: #ff0015;
+}
+
+/* ==================== COMPROMISOS ==================== */
+#compromisos {
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.compromisos-intro {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.compromisos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.compromiso-card {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.compromiso-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.compromiso-card h3 {
+    font-size: 1.5rem;
+    color: #fa0202;
+    margin-bottom: 15px;
+}
+
+.compromiso-card ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.compromiso-card ul li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333;
 }

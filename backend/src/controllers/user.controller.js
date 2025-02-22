@@ -48,8 +48,11 @@ const createUser = [
     }),
 
     async (req, res) => {
+        console.log('Solicitud de creación de usuario recibida:', req.body); // Log de depuración
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+            console.log('Errores de validación:', errors.array()); // Log de depuración
             return res.status(400).json({ errors: errors.array() });
         }
 
@@ -57,13 +60,14 @@ const createUser = [
 
         // Verifica que el rol exista en la tabla de roles
         const checkRoleQuery = 'SELECT * FROM roles WHERE ID_rol = ?';
-        database.query(checkRoleQuery, [ID_rol], (err, result) => {
-            if (err) {
-                console.error('Error al verificar el rol:', err);
-                return res.status(500).json({ message: 'Error al verificar el rol. Por favor, inténtalo de nuevo.' });
-            }
+        console.log('Ejecutando consulta para verificar el rol:', checkRoleQuery); // Log de depuración
 
-            if (result.length === 0) {
+        try {
+            const [roleResult] = await database.query(checkRoleQuery, [ID_rol]);
+            console.log('Resultado de la consulta de roles:', roleResult); // Log de depuración
+
+            if (roleResult.length === 0) {
+                console.log('Rol no encontrado:', ID_rol); // Log de depuración
                 return res.status(404).json({ message: 'Rol no encontrado.' });
             }
 
@@ -76,21 +80,22 @@ const createUser = [
                 VALUES (?, ?, ?, ?, ?, ?, ?);
             `;
 
-            database.query(createQuery, [dni, nombre, apellido, email, password, ID_rol, cursoValue], (err, result) => {
-                if (err) {
-                    console.error('Error al crear el usuario:', err);
-                    return res.status(500).json({ 
-                        message: 'Error al crear el usuario. Por favor, inténtalo de nuevo.',
-                        error: err.message // Devuelve el mensaje de error específico
-                    });
-                }
+            console.log('Ejecutando consulta para crear el usuario:', createQuery); // Log de depuración
 
-                res.status(201).json({ 
-                    message: 'Usuario creado con éxito.', 
-                    ID_usuario: result.insertId 
-                });
+            const [createResult] = await database.query(createQuery, [dni, nombre, apellido, email, password, ID_rol, cursoValue]);
+            console.log('Usuario creado con éxito:', createResult); // Log de depuración
+
+            res.status(201).json({ 
+                message: 'Usuario creado con éxito.', 
+                ID_usuario: createResult.insertId 
             });
-        });
+        } catch (error) {
+            console.error('Error en la consulta a la base de datos:', error); // Log de depuración
+            return res.status(500).json({ 
+                message: 'Error al crear el usuario. Por favor, inténtalo de nuevo.',
+                error: error.message // Devuelve el mensaje de error específico
+            });
+        }
     }
 ];
 
