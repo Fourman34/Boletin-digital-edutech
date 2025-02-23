@@ -6,6 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materias</title>
     <link rel="stylesheet" href="index1.css">
+    <style>
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Estilos responsivos para la tabla */
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                border: 1px solid #ccc;
+            }
+
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -20,20 +72,34 @@
             <li><a href="contactar.html">Contacto</a></li>
             <li><a href="matricularse.html">Matricularse</a></li>
             <li id="materiasLink"><a href="#" id="materiasEnlace">Materias</a></li>
-            <li id="adminLink"><a href="administrador.html">Administradores</a></li>
+            <li id="adminLink" style="display: none;"><a href="administrador.html">Administradores</a></li>
         </ul>
     </nav>
     <main>
         <h2>Bienvenido <span id="nombreAlumno"></span></h2> <!-- Mostrar el nombre del alumno -->
         
+        <!-- Selector de materias -->
+        <div class="selector-materia">
+            <label for="materia">Selecciona una materia:</label>
+            <select id="materia">
+                <!-- Las materias se cargarán dinámicamente desde el backend -->
+            </select>
+        </div>
+    
         <section>
             <table id="tablaNotas">
                 <thead>
                     <tr>
                         <th>Materia</th>
-                        <th>Primer Cuatrimestre</th>
-                        <th>Segundo Cuatrimestre</th>
-                        <th>Calificación Final</th>
+                        <th>Primer Cuatrimestre 1</th>
+                        <th>Primer Cuatrimestre 2</th>
+                        <th>Primer Cuatrimestre Nota</th>
+                        <th>Segundo Cuatrimestre 1</th>
+                        <th>Segundo Cuatrimestre 2</th>
+                        <th>Segundo Cuatrimestre Nota</th>
+                        <th>Nota Final</th>
+                        <th>Nota Diciembre</th>
+                        <th>Nota Febrero/Marzo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,57 +119,124 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const materiasLink = document.getElementById('materiasLink');
             const usuario = JSON.parse(localStorage.getItem('usuario'));
 
             if (!usuario) {
-                materiasLink.style.display = 'none';
                 alert("Debes iniciar sesión para ver tus notas.");
-                window.location.href = 'login.html';
+                window.location.href = 'login.html'; // Redirigir a la página de inicio de sesión
             } else {
-                materiasLink.style.display = 'block';
-                // Mostrar el nombre del alumno
+                // Mostrar el nombre del usuario
                 document.getElementById('nombreAlumno').textContent = usuario.nombre;
-                // Cargar las notas del alumno
-                cargarNotasDelAlumno(usuario.ID_usuario);
+
+                // Verificar el rol del usuario y mostrar/ocultar el enlace de Administrador
+                const adminLink = document.getElementById('adminLink');
+                const rolNormalizado = usuario.rol ? usuario.rol.trim().toLowerCase() : '';
+                console.log("Rol del usuario:", rolNormalizado); // Depuración
+
+                if (rolNormalizado === 'administrador') {
+                    adminLink.style.display = 'block'; // Mostrar el enlace para administradores
+                } else {
+                    adminLink.style.display = 'none'; // Ocultar el enlace para otros roles
+                }
+
+                // Cargar las materias
+                cargarMaterias();
+
+                // Cargar las notas del alumno cuando se selecciona una materia
+                const selectorMateria = document.getElementById("materia");
+                selectorMateria.addEventListener("change", () => {
+                    cargarNotasDelAlumno(usuario.ID_usuario);
+                });
             }
         });
 
+        // Función para cargar las materias desde el servidor
+        async function cargarMaterias() {
+            try {
+                const response = await fetch("http://localhost:3000/obtener-materias");
+                if (response.ok) {
+                    const materias = await response.json();
+                    const selectorMateria = document.getElementById("materia");
+                    selectorMateria.innerHTML = materias.map(materia => 
+                        `<option value="${materia.nombre}">${materia.nombre}</option>`
+                    ).join("");
+                } else {
+                    alert("Hubo un error al cargar las materias.");
+                }
+            } catch (error) {
+                console.error("Error al cargar las materias:", error);
+            }
+        }
+
         // Función para cargar las notas del alumno
         async function cargarNotasDelAlumno(ID_usuario) {
+            const selectorMateria = document.getElementById("materia");
+            const materia = selectorMateria.value; // Obtener la materia seleccionada
+
+            if (!materia) {
+                alert("Por favor, selecciona una materia.");
+                return;
+            }
+
             try {
-                const response = await fetch(`http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}`);
+                console.log("ID_usuario:", ID_usuario); // Depuración
+                console.log("Materia seleccionada:", materia); // Depuración
+
+                const response = await fetch(`http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&materia=${materia}`);
+                
                 if (response.ok) {
                     const notas = await response.json();
-                    actualizarTablaConNotas(notas);
+                    console.log("Notas obtenidas:", notas); // Depuración
+                    if (notas.length === 0) {
+                        alert("No tienes notas registradas para esta materia.");
+                    } else {
+                        actualizarTablaConNotas(notas);
+                    }
                 } else {
-                    alert("Hubo un error al cargar las notas.");
+                    alert("Hubo un error al cargar las notas. Inténtalo de nuevo más tarde.");
                 }
             } catch (error) {
                 console.error("Error al cargar las notas:", error);
+                alert("Hubo un error al conectar con el servidor.");
             }
         }
 
         // Función para actualizar la tabla con las notas
         function actualizarTablaConNotas(notas) {
             const tbody = document.querySelector("#tablaNotas tbody");
-            tbody.innerHTML = notas.map(nota => `
-                <tr>
-                    <td data-label="Materia">${nota.materia}</td>
-                    <td data-label="Primer Cuatrimestre">${nota.primer_cuatrimestre_nota || ''}</td>
-                    <td data-label="Segundo Cuatrimestre">${nota.segundo_cuatrimestre_nota || ''}</td>
-                    <td data-label="Calificación Final">${nota.nota_final || ''}</td>
-                </tr>
-            `).join("");
+            tbody.innerHTML = ""; // Limpiar la tabla antes de cargar nuevas notas
+
+            if (notas.length === 0) {
+                // Si no hay notas, mostrar un mensaje
+                tbody.innerHTML = `<tr><td colspan="10">No hay notas registradas para esta materia.</td></tr>`;
+            } else {
+                // Si hay notas, llenar la tabla con los datos
+                notas.forEach(nota => {
+                    const fila = `
+                        <tr>
+                            <td data-label="Materia">${nota.materia}</td>
+                            <td data-label="Primer Cuatrimestre 1">${nota.primer_cuatrimestre_1 || ''}</td>
+                            <td data-label="Primer Cuatrimestre 2">${nota.primer_cuatrimestre_2 || ''}</td>
+                            <td data-label="Primer Cuatrimestre Nota">${nota.primer_cuatrimestre_nota || ''}</td>
+                            <td data-label="Segundo Cuatrimestre 1">${nota.segundo_cuatrimestre_1 || ''}</td>
+                            <td data-label="Segundo Cuatrimestre 2">${nota.segundo_cuatrimestre_2 || ''}</td>
+                            <td data-label="Segundo Cuatrimestre Nota">${nota.segundo_cuatrimestre_nota || ''}</td>
+                            <td data-label="Nota Final">${nota.nota_final || ''}</td>
+                            <td data-label="Nota Diciembre">${nota.nota_diciembre || ''}</td>
+                            <td data-label="Nota Febrero/Marzo">${nota.nota_febrero_marzo || ''}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += fila;
+                });
+            }
         }
 
         // Función para cerrar sesión
         function cerrarSesion() {
-            localStorage.removeItem('usuario'); 
-            window.location.href = 'matricularse.html'; 
+            console.log("Cerrando sesión..."); // Depuración
+            localStorage.removeItem('usuario'); // Eliminar el usuario de localStorage
+            window.location.href = 'login.html'; // Redirigir a la página de inicio de sesión
         }
     </script>
-    <script src="js/materiasEnlace.js"></script>
-    <script src="js/matricularse.js"></script>
 </body>
 </html>

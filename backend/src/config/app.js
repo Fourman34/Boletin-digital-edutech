@@ -1,16 +1,12 @@
 const express = require('express');
-const jwt = require("jsonwebtoken");
 const path = require('path');
-const cors = require('cors');
-const database = require('./database');
-const { verificarGestor } = require('../middlewares/authMiddleware');
+const cors = require('cors'); // Importa el módulo CORS
+const database = require('./database'); // Ruta corregida
 const userRoutes = require('../routes/user.routes.js');
-const notasRoutes = require('../routes/notas.routes.js');
+const notasRoutes = require('../routes/notas.routes.js'); // Ruta corregida
 
 const app = express();
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.set('port', 3000);
 
@@ -18,53 +14,33 @@ app.set('port', 3000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Ruta para iniciar sesión
-app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        // Verificar las credenciales del usuario (esto es un ejemplo)
-        const usuario = await verificarCredenciales(email, password);
-
-        if (!usuario) {
-            return res.status(401).json({ message: "Credenciales inválidas." });
-        }
-
-        // Crear el payload del token (datos que se incluirán en el token)
-        const payload = {
-            id: usuario.id,
-            nombre: usuario.nombre,
-            rol: usuario.rol, // Asegúrate de incluir el rol del usuario
-        };
-
-        // Firmar el token con la clave secreta
-        const token = jwt.sign(payload, "tu_secreto", { expiresIn: "1h" }); // El token expira en 1 hora
-
-        // Enviar el token al cliente
-        res.status(200).json({ token });
-    } catch (error) {
-        console.error("Error en el inicio de sesión:", error);
-        res.status(500).json({ message: "Error en el servidor." });
-    }
-});
-
 // Rutas
-app.use('/user', userRoutes);
-app.use('/notas', notasRoutes);
-
-// Resto del código...
+app.use('/user', userRoutes); // Ruta para manejar usuarios
+app.use('/notas', notasRoutes); // Ruta para manejar notas
 
 // Ruta para obtener notas del alumno que inició sesión
 app.get("/obtener-notas", async (req, res) => {
-    const { ID_usuario } = req.query; // Obtener el ID_usuario del query
+    const { ID_usuario, materia, curso } = req.query;
 
-    if (!ID_usuario) {
-        return res.status(400).json({ message: "ID_usuario es requerido." });
+    if (!ID_usuario || !curso) {
+        return res.status(400).json({ message: "ID_usuario y curso son requeridos." });
     }
 
     try {
-        const query = "SELECT * FROM notas WHERE ID_usuario = ?";
-        const [notas] = await database.query(query, [ID_usuario]);
+        let query;
+        let params;
+
+        if (materia) {
+            query = "SELECT * FROM notas WHERE ID_usuario = ? AND materia = ? AND curso = ?";
+            params = [ID_usuario, materia, curso];
+        } else {
+            query = "SELECT * FROM notas WHERE ID_usuario = ? AND curso = ?";
+            params = [ID_usuario, curso];
+        }
+
+        const [notas] = await database.query(query, params);
+
+        console.log("Notas encontradas:", notas); // Depuración
         res.status(200).json(notas);
     } catch (error) {
         console.error("Error al obtener las notas:", error);
@@ -72,31 +48,43 @@ app.get("/obtener-notas", async (req, res) => {
     }
 });
 
-// Ruta para guardar notas (protegida por el middleware verificarGestor)
-app.post("/guardar-notas", verificarGestor, async (req, res) => {
+// Ruta para guardar notas
+app.post("/guardar-notas", async (req, res) => {
     const notas = req.body;
 
+    if (!notas || !Array.isArray(notas)) {
+        return res.status(400).json({ message: "Datos de notas no válidos." });
+    }
+
     try {
-        // Iniciar una transacción
         await database.query("START TRANSACTION");
 
         for (const nota of notas) {
             const query = `
                 INSERT INTO notas (
-                    ID_usuario, materia, nota, fecha,
+                    ID_usuario, materia, curso, fecha,
                     primer_cuatrimestre_1, primer_cuatrimestre_2, primer_cuatrimestre_nota,
                     segundo_cuatrimestre_1, segundo_cuatrimestre_2, segundo_cuatrimestre_nota,
                     nota_final, nota_diciembre, nota_febrero_marzo
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    primer_cuatrimestre_1 = VALUES(primer_cuatrimestre_1),
+                    primer_cuatrimestre_2 = VALUES(primer_cuatrimestre_2),
+                    primer_cuatrimestre_nota = VALUES(primer_cuatrimestre_nota),
+                    segundo_cuatrimestre_1 = VALUES(segundo_cuatrimestre_1),
+                    segundo_cuatrimestre_2 = VALUES(segundo_cuatrimestre_2),
+                    segundo_cuatrimestre_nota = VALUES(segundo_cuatrimestre_nota),
+                    nota_final = VALUES(nota_final),
+                    nota_diciembre = VALUES(nota_diciembre),
+                    nota_febrero_marzo = VALUES(nota_febrero_marzo);
             `;
 
-            const ID_usuario = await obtenerIdUsuarioPorNombre(nota.alumno);
             const fecha = new Date().toISOString().split("T")[0]; // Fecha actual en formato YYYY-MM-DD
 
             await database.query(query, [
-                ID_usuario,
+                nota.ID_usuario,
                 nota.materia,
-                nota.nota || null, // Si no se proporciona, se guarda como NULL
+                nota.curso,
                 fecha,
                 nota.primer_cuatrimestre_1,
                 nota.primer_cuatrimestre_2,
@@ -110,23 +98,44 @@ app.post("/guardar-notas", verificarGestor, async (req, res) => {
             ]);
         }
 
-        // Confirmar la transacción
         await database.query("COMMIT");
-
         res.status(200).json({ message: "Notas guardadas correctamente." });
     } catch (error) {
-        // Revertir la transacción en caso de error
         await database.query("ROLLBACK");
         console.error("Error al guardar las notas:", error);
         res.status(500).json({ message: "Error al guardar las notas." });
     }
 });
 
-// Ruta para obtener materias
-app.get("/obtener-materias", async (req, res) => {
+// Ruta para eliminar notas
+app.delete("/eliminar-notas", async (req, res) => {
+    const { ID_usuario, materia, curso } = req.body;
+
+    if (!ID_usuario || !materia || !curso) {
+        return res.status(400).json({ message: "ID_usuario, materia y curso son requeridos." });
+    }
+
     try {
-        const query = "SELECT * FROM materias WHERE curso = '7°1'"; // Filtra por curso
-        const [materias] = await database.query(query);
+        const query = "DELETE FROM notas WHERE ID_usuario = ? AND materia = ? AND curso = ?";
+        await database.query(query, [ID_usuario, materia, curso]);
+        res.status(200).json({ message: "Notas eliminadas correctamente." });
+    } catch (error) {
+        console.error("Error al eliminar las notas:", error);
+        res.status(500).json({ message: "Error al eliminar las notas." });
+    }
+});
+
+// Ruta para obtener materias por curso
+app.get("/obtener-materias", async (req, res) => {
+    const { curso } = req.query;
+
+    if (!curso) {
+        return res.status(400).json({ message: "El parámetro 'curso' es requerido." });
+    }
+
+    try {
+        const query = "SELECT * FROM materias WHERE curso = ?";
+        const [materias] = await database.query(query, [curso]);
         res.status(200).json(materias);
     } catch (error) {
         console.error("Error al obtener las materias:", error);
@@ -134,11 +143,17 @@ app.get("/obtener-materias", async (req, res) => {
     }
 });
 
-// Ruta para obtener alumnos del curso "7°1" con rol 1 (alumno)
+// Ruta para obtener alumnos por curso
 app.get("/obtener-alumnos", async (req, res) => {
+    const { curso } = req.query;
+
+    if (!curso) {
+        return res.status(400).json({ message: "El parámetro 'curso' es requerido." });
+    }
+
     try {
-        const query = "SELECT * FROM usuarios WHERE ID_rol = 1 AND curso = '7°1'"; // Filtrar por rol 1 (alumno) y curso
-        const [alumnos] = await database.query(query);
+        const query = "SELECT * FROM usuarios WHERE ID_rol = 1 AND curso = ?";
+        const [alumnos] = await database.query(query, [curso]);
         res.status(200).json(alumnos);
     } catch (error) {
         console.error("Error al obtener los alumnos:", error);
@@ -149,6 +164,10 @@ app.get("/obtener-alumnos", async (req, res) => {
 // Ruta para agregar una materia
 app.post("/agregar-materia", async (req, res) => {
     const { nombre, curso } = req.body;
+
+    if (!nombre || !curso) {
+        return res.status(400).json({ message: "Nombre y curso son requeridos." });
+    }
 
     try {
         const query = "INSERT INTO materias (nombre, curso) VALUES (?, ?)";
@@ -164,6 +183,10 @@ app.post("/agregar-materia", async (req, res) => {
 app.post("/agregar-alumno", async (req, res) => {
     const { nombre, apellido, curso } = req.body;
 
+    if (!nombre || !apellido || !curso) {
+        return res.status(400).json({ message: "Nombre, apellido y curso son requeridos." });
+    }
+
     try {
         const query = "INSERT INTO alumnos (nombre, apellido, curso) VALUES (?, ?, ?)";
         await database.query(query, [nombre, apellido, curso]);
@@ -174,19 +197,11 @@ app.post("/agregar-alumno", async (req, res) => {
     }
 });
 
-// Función para obtener el ID_usuario por nombre
-async function obtenerIdUsuarioPorNombre(nombre) {
-    const query = "SELECT ID_usuario FROM usuarios WHERE nombre = ?";
-    const [result] = await database.query(query, [nombre]);
-    return result.length > 0 ? result[0].ID_usuario : null;
-}
-
 // Ruta para obtener los datos de un usuario por su ID
 app.get('/user/:id', async (req, res) => {
     const { id } = req.params; // Obtener el ID del usuario desde los parámetros de la URL
 
     try {
-        // Realizar una consulta a la base de datos para obtener el usuario por ID
         const query = "SELECT * FROM usuarios WHERE ID_usuario = ?";
         const [user] = await database.query(query, [id]);
 

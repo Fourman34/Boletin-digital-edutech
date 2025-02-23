@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
         materiasLink.style.display = 'block';
 
         // Normaliza el rol (elimina espacios y saltos de línea)
-        const rolNormalizado = usuario.rol.trim().toLowerCase();
+        const rolNormalizado = usuario.rol ? usuario.rol.trim().toLowerCase() : '';
+        console.log("Rol normalizado:", rolNormalizado); // Depuración
 
         // Muestra u oculta el enlace de Administradores según el rol
         if (rolNormalizado === 'administrador') {
