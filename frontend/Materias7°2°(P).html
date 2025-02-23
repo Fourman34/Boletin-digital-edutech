@@ -70,21 +70,24 @@
     <main>
         <h2>Bienvenido <span id="nombreUsuario"></span></h2> <!-- Mostrar el nombre del usuario -->
 
-        <!-- Selector de alumnos -->
-        <div class="selector-alumno">
-            <label for="alumno">Selecciona un alumno:</label>
-            <select id="alumno">
-                <!-- Los alumnos se cargarán dinámicamente desde el backend -->
-            </select>
-        </div>
+    <!-- Campo oculto para el curso -->
+    <input type="hidden" id="curso" value="7°2"> <!-- Asegúrate de que el valor sea correcto -->
 
-        <!-- Selector de materias -->
-        <div class="selector-materia">
-            <label for="materia">Selecciona una materia:</label>
-            <select id="materia">
-                <!-- Las materias se cargarán dinámicamente desde el backend -->
-            </select>
-        </div>
+    <!-- Selector de alumnos -->
+    <div class="selector-alumno">
+        <label for="alumno">Selecciona un alumno:</label>
+        <select id="alumno">
+            <!-- Los alumnos se cargarán dinámicamente desde el backend -->
+        </select>
+    </div>
+
+    <!-- Selector de materias -->
+    <div class="selector-materia">
+        <label for="materia">Selecciona una materia:</label>
+        <select id="materia">
+            <!-- Las materias se cargarán dinámicamente desde el backend -->
+        </select>
+    </div>
 
         <!-- Botón para agregar una nueva fila -->
         <button id="agregarFila">Agregar Fila</button>

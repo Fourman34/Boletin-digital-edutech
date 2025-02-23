@@ -136,13 +136,18 @@ app.get("/obtener-materias", async (req, res) => {
     try {
         const query = "SELECT * FROM materias WHERE curso = ?";
         const [materias] = await database.query(query, [curso]);
+        console.log("Materias encontradas para el curso", curso, ":", materias); // Depuración
+
+        if (materias.length === 0) {
+            console.log("No se encontraron materias para el curso:", curso); // Depuración
+        }
+
         res.status(200).json(materias);
     } catch (error) {
         console.error("Error al obtener las materias:", error);
         res.status(500).json({ message: "Error al obtener las materias." });
     }
 });
-
 // Ruta para obtener alumnos por curso
 app.get("/obtener-alumnos", async (req, res) => {
     const { curso } = req.query;

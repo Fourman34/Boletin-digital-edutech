@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Obtener el curso desde un campo oculto en el HTML
     const curso = document.getElementById("curso").value;
+    console.log("Curso seleccionado:", curso); // Depuración
 
     // Cargar materias y alumnos al iniciar la página
     if (selectorMateria) cargarMaterias(curso); // Solo cargar materias si el selector existe
@@ -59,11 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         fila.remove();
                         alert("Notas eliminadas correctamente.");
                     } else {
-                        alert("Hubo un error al eliminar las notas.");
+                        throw new Error(`Error al eliminar las notas: ${response.statusText}`);
                     }
                 } catch (error) {
                     console.error("Error al eliminar las notas:", error);
-                    alert("Hubo un error al conectar con el servidor.");
+                    alert("Hubo un error al eliminar las notas. Por favor, intenta nuevamente.");
                 }
             }
         }
@@ -108,17 +109,28 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para cargar materias desde el servidor
     async function cargarMaterias(curso) {
         try {
+            console.log("Cargando materias para el curso:", curso); // Depuración
             const response = await fetch(`http://localhost:3000/obtener-materias?curso=${curso}`);
-            if (response.ok) {
-                const materias = await response.json();
+            console.log("Respuesta del servidor:", response); // Depuración
+    
+            if (!response.ok) {
+                throw new Error(`Error al cargar las materias: ${response.statusText}`);
+            }
+    
+            const materias = await response.json();
+            console.log("Materias obtenidas:", materias); // Depuración
+    
+            const selectorMateria = document.getElementById("materia");
+            if (selectorMateria) {
                 selectorMateria.innerHTML = materias.map(materia => 
                     `<option value="${materia.nombre}">${materia.nombre}</option>`
                 ).join("");
             } else {
-                alert("Hubo un error al cargar las materias.");
+                console.error("El selector de materias no fue encontrado en el DOM."); // Depuración
             }
         } catch (error) {
             console.error("Error al cargar las materias:", error);
+            alert("Hubo un error al cargar las materias. Por favor, intenta nuevamente.");
         }
     }
 
@@ -126,16 +138,16 @@ document.addEventListener("DOMContentLoaded", function () {
     async function cargarAlumnos(curso) {
         try {
             const response = await fetch(`http://localhost:3000/obtener-alumnos?curso=${curso}`);
-            if (response.ok) {
-                const alumnos = await response.json();
-                selectorAlumno.innerHTML = alumnos.map(alumno => 
-                    `<option value="${alumno.ID_usuario}">${alumno.nombre} ${alumno.apellido}</option>`
-                ).join("");
-            } else {
-                alert("Hubo un error al cargar los alumnos.");
+            if (!response.ok) {
+                throw new Error(`Error al cargar los alumnos: ${response.statusText}`);
             }
+            const alumnos = await response.json();
+            selectorAlumno.innerHTML = alumnos.map(alumno => 
+                `<option value="${alumno.ID_usuario}">${alumno.nombre} ${alumno.apellido}</option>`
+            ).join("");
         } catch (error) {
             console.error("Error al cargar los alumnos:", error);
+            alert("Hubo un error al cargar los alumnos. Por favor, intenta nuevamente.");
         }
     }
 
@@ -143,31 +155,30 @@ document.addEventListener("DOMContentLoaded", function () {
     async function cargarNotas() {
         const ID_usuario = selectorAlumno.value; // Obtener el ID_usuario del alumno seleccionado
         const materia = selectorMateria ? selectorMateria.value : null; // Obtener la materia seleccionada si existe
-    
+
         if (!ID_usuario) {
             alert("Por favor, selecciona un alumno.");
             return;
         }
-    
+
         try {
             console.log("Enviando solicitud para obtener notas...");
             const url = materia 
                 ? `http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&materia=${materia}&curso=${curso}`
                 : `http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&curso=${curso}`;
-            
+
             const response = await fetch(url);
-            
-            if (response.ok) {
-                const notas = await response.json();
-                console.log("Notas obtenidas:", notas);
-                actualizarTablaConNotas(notas); // Actualizar la tabla con las notas obtenidas
-            } else {
-                console.error("Error en la respuesta del servidor:", response.status, response.statusText);
-                alert("Hubo un error al cargar las notas.");
+
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta del servidor: ${response.statusText}`);
             }
+
+            const notas = await response.json();
+            console.log("Notas obtenidas:", notas);
+            actualizarTablaConNotas(notas); // Actualizar la tabla con las notas obtenidas
         } catch (error) {
             console.error("Error al cargar las notas:", error);
-            alert("Hubo un error al conectar con el servidor.");
+            alert("Hubo un error al cargar las notas. Por favor, intenta nuevamente.");
         }
     }
 
@@ -175,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function actualizarTablaConNotas(notas) {
         const tbody = tabla.querySelector("tbody");
         tbody.innerHTML = ""; // Limpiar la tabla antes de cargar nuevas notas
-    
+
         if (notas.length === 0) {
             // Si no hay notas, agregar una fila vacía para ingresar datos
             tbody.innerHTML = `
@@ -265,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (response.ok) {
                 return "éxito";
             } else {
-                return "error";
+                throw new Error(`Error al enviar las notas: ${response.statusText}`);
             }
         } catch (error) {
             console.error("Error al enviar las notas:", error);
@@ -284,7 +295,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Datos
         filas.forEach(fila => {
             const celdas = fila.querySelectorAll("td");
-            const filaData = Array.from(celdas).map(celda => celda.textContent).join(",");
+            const filaData = Array.from(celdas).map(celda => celda.textContent.trim()).join(",");
             csvContent += filaData + "\n";
         });
 
@@ -305,6 +316,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!isNaN(primerCuatrimestre) && !isNaN(segundoCuatrimestre)) {
             fila.cells[9].textContent = ((primerCuatrimestre + segundoCuatrimestre) / 2).toFixed(2);
+        } else {
+            fila.cells[9].textContent = "";
         }
     }
 
@@ -316,6 +329,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!isNaN(notaFinal)) {
                 fila.cells[9].classList.toggle("aprobado", notaFinal >= 6);
                 fila.cells[9].classList.toggle("reprobado", notaFinal < 6);
+            } else {
+                fila.cells[9].classList.remove("aprobado", "reprobado");
             }
         });
     }
