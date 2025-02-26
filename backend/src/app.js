@@ -61,3 +61,4 @@ connection.query(checkQUERY, (err, results) => {
 app.listen(3000, () => {
     console.log('Servidor encendido');
 });
+

@@ -1,15 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="logo.webp" />
+    <link rel="icon" href="imagenes/logo.webp" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>crear cuenta</title>
+    <title>Crear Cuenta</title>
     <link rel="stylesheet" href="index1.css">
+    <style>
+        /* Estilos adicionales para el formulario de creación de cuenta */
+        .form-login {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .form-login h5 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fa0202;
+        }
+
+        .form-login .controls {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-login select.controls {
+            appearance: none; /* Eliminar el estilo predeterminado del select */
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .form-login .buttons {
+            width: 100%;
+            padding: 10px;
+            background-color: #fa0202;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-login .buttons:hover {
+            background-color: #8d0303;
+        }
+
+        .form-login p {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .form-login a {
+            color: #fa0202;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .form-login a:hover {
+            color: #8d0303;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
+
 <body>
     <header>
-        <img id="Logo" src="logo.webp" height="90" width="90">
+        <img id="Logo" src="imagenes/logo.webp" height="90" width="90">
         <h1>Colegio Provincial Dr. Ernesto Guevara</h1> 
     </header> 
 
@@ -19,77 +89,143 @@
             <li><a href="calendario.html">Calendario</a></li>
             <li><a href="contactar.html">Contacto</a></li>
             <li><a href="matricularse.html">Matricularse</a></li>
-            <li><a href="materias(A).html">Materias</a></li>
+            <li id="materiasLink"><a href="#" id="materiasEnlace">Materias</a></li>
+            <li id="adminLink"><a href="administrador.html">Administradores</a></li>
         </ul>
     </nav>
-
     <main>
         <section class="form-login">
             <h5>Crear Cuenta</h5>
             <form id="createAccountForm">
-                <input class="controls" type="text" name="dni" placeholder="DNI" required>
-                <input class="controls" type="text" name="nombre" placeholder="Nombre completo" required>
-                <input class="controls" type="text" name="apellido" placeholder="Apellido" required>
-                <input class="controls" type="email" name="email" placeholder="Correo electrónico" required>
-                <input class="controls" type="password" name="password" placeholder="Contraseña" required>
-                <input class="controls" type="password" name="confirmPassword" placeholder="Confirmar contraseña" required>
+                <input class="controls" type="text" name="dni" placeholder="DNI" autocomplete="username" required>
+                <input class="controls" type="text" name="nombre" placeholder="Nombre completo" autocomplete="name" required>
+                <input class="controls" type="text" name="apellido" placeholder="Apellido" autocomplete="family-name" required>
+                <input class="controls" type="email" name="email" placeholder="Correo electrónico" autocomplete="email" required>
+                <input class="controls" type="password" name="password" placeholder="Contraseña" autocomplete="new-password" required>
+                <input class="controls" type="password" name="confirmPassword" placeholder="Confirmar contraseña" autocomplete="new-password" required>
+                
+                <!-- Campo de selección de curso -->
+                <select class="controls" name="curso" id="cursoSelect">
+                    <option value="" disabled selected>Selecciona tu curso</option>
+                    <option value="7°1">7°1</option>
+                    <option value="7°2">7°2</option>
+                    <option value="7°3">7°3</option>
+                </select>
+
+                <!-- Campo de selección de rol -->
+                <select class="controls" name="rol" id="rolSelect" required>
+                    <option value="" disabled selected>Selecciona tu rol</option>
+                    <option value="1">Alumno</option>
+                    <option value="2">Gestor de notas</option>
+                    <option value="3">Administrador</option>
+                </select>
+
                 <input class="buttons" type="submit" value="Crear Cuenta">
             </form>
+            <p id="message" style="color: red;"></p>
         </section>
     </main>
 
     <footer>
         <p>&copy; 2024 EduTech. Todos los derechos reservados.</p>
     </footer>
+    <button onclick="cerrarSesion()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Cerrar sesión
+    </button>
 
     <script>
-        document.getElementById('createAccountForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // Función para manejar el cierre de sesión
+        function cerrarSesion() {
+            localStorage.removeItem('usuario'); 
+            window.location.href = 'matricularse.html'; 
+        }
 
-            const password = e.target.password.value;
-            const confirmPassword = e.target.confirmPassword.value;
+        // Código para deshabilitar el campo de curso si el rol es "Gestor de notas"
+        document.addEventListener("DOMContentLoaded", () => {
+            const formRegister = document.getElementById('createAccountForm');
+            const cursoSelect = document.getElementById('cursoSelect'); // Campo de curso
+            const rolSelect = document.getElementById('rolSelect'); // Campo de rol
+            const msgContainer = document.getElementById('message');
 
-            // Validar si las contraseñas coinciden
-            if (password !== confirmPassword) {
-                alert('Las contraseñas no coinciden.');
+            if (!formRegister) {
+                console.error("No se encontró el formulario en el DOM.");
                 return;
             }
 
-            const formData = new FormData(e.target);
-            const data = {
-                dni: formData.get('dni'),
-                nombre: formData.get('nombre'),
-                apellido: formData.get('apellido'),
-                email: formData.get('email'),
-                password: formData.get('password')
-            };
+            // Escuchar cambios en el campo de rol
+            rolSelect.addEventListener('change', (e) => {
+    const selectedRol = e.target.value;
 
-            try {
-                // Enviar los datos al servidor para crear la cuenta
-                const response = await fetch('http://127.0.0.1:3306', 
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
+    // Deshabilitar el campo de curso si el rol es "Gestor de notas" (ID_rol = 2) o "Administrador" (ID_rol = 3)
+    if (selectedRol === "2" || selectedRol === "3") {
+        cursoSelect.disabled = true;
+        cursoSelect.value = ""; // Limpiar el valor seleccionado
+    } else {
+        cursoSelect.disabled = false;
+    }
+});
 
-                const result = await response.json();
+            // Manejar el envío del formulario
+            formRegister.addEventListener('submit', async (e) => {
+                e.preventDefault();
 
-                if (response.ok) {
-                    // Redirigir a success.html si la cuenta se creó correctamente
-                    window.location.href = 'success.html';
-                } else {
-                    // Mostrar un error si la creación falló
-                    alert(result.message || 'Hubo un error al crear la cuenta. Inténtalo de nuevo.');
+                const dni = e.target.dni.value;
+                const nombre = e.target.nombre.value;
+                const apellido = e.target.apellido.value;
+                const email = e.target.email.value;
+                const password = e.target.password.value;
+                const confirmPassword = e.target.confirmPassword.value;
+                const ID_rol = e.target.rol.value;  // Obtener el valor del campo de selección de rol
+                const curso = ID_rol === "2" ? null : e.target.curso.value; // Ignorar curso si el rol es "Gestor de notas"
+
+                // Validación de contraseñas
+                if (password !== confirmPassword) {
+                    msgContainer.innerText = 'Las contraseñas no coinciden.';
+                    msgContainer.style.color = 'red';
+                    return;
                 }
+
+                try {
+                    const response = await fetch('http://localhost:3000/user', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            dni,
+                            nombre,
+                            apellido,
+                            email,
+                            password,
+                            ID_rol,  // Enviar el rol seleccionado
+                            curso,   // Enviar el curso seleccionado (puede ser null)
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        msgContainer.innerText = 'Cuenta creada exitosamente.';
+                        msgContainer.style.color = 'green';
+
+                        // Redirigir a success.html después de 2 segundos
+                        setTimeout(() => {
+                            window.location.href = 'success.html';
+                        }, 2000);
+                    } else {
+                        msgContainer.innerText = data.message || 'Hubo un error al crear la cuenta.';
+                        msgContainer.style.color = 'red';
+                    }
                 } catch (error) {
-                console.error('Error:', error);
-                alert('Hubo un error al crear la cuenta. Inténtalo de nuevo.');
-            }
+                    console.error('Error:', error);
+                    msgContainer.innerText = 'Hubo un error al procesar el registro.';
+                    msgContainer.style.color = 'red';
+                }
+            });
         });
     </script>
+        <script src="js/materiasEnlace.js"></script>
+        <script src="js/matricularse.js"></script>
 </body>
 <br><br><br><br><br><br>
 </html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="imagenes/logo.webp" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="index1.css">
+    <style>
+        /* Estilos adicionales para la página de administración */
+        .admin-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .admin-container h2 {
+            text-align: center;
+            color: #fa0202;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #fa0202;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .btn-eliminar {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-eliminar:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img id="Logo" src="imagenes/logo.webp" height="90" width="90">
+        <h1>Colegio Provincial Dr. Ernesto Guevara</h1> 
+    </header> 
+
+    <nav>
+        <ul>
+            <li><a href="index1.html">Inicio</a></li>
+            <li><a href="calendario.html">Calendario</a></li>
+            <li><a href="contactar.html">Contacto</a></li>
+            <li><a href="matricularse.html">Matricularse</a></li>
+            <li id="materiasLink"><a href="#" id="materiasEnlace">Materias</a></li>
+            <li id="adminLink"><a href="administrador.html">Administradores</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="admin-container">
+            <h2>Panel de Administración</h2>
+            <table id="tabla-usuarios">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Curso</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los usuarios se cargarán dinámicamente aquí -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 EduTech. Derechos Reservados.</p>
+    </footer>
+
+    <button onclick="cerrarSesion()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Cerrar sesión
+    </button>
+
+    <script>
+        // Función para cargar los usuarios desde el backend
+        async function cargarUsuarios() {
+            try {
+                const response = await fetch('http://localhost:3000/user');
+                if (!response.ok) {
+                    throw new Error('Error al cargar los usuarios');
+                }
+                const usuarios = await response.json();
+
+                const tabla = document.getElementById('tabla-usuarios').getElementsByTagName('tbody')[0];
+                tabla.innerHTML = ''; // Limpiar la tabla antes de cargar los datos
+
+                usuarios.forEach(usuario => {
+                    const fila = tabla.insertRow();
+                    fila.insertCell().textContent = usuario.ID_usuario;
+                    fila.insertCell().textContent = usuario.nombre;
+                    fila.insertCell().textContent = usuario.apellido;
+                    fila.insertCell().textContent = usuario.email;
+                    fila.insertCell().textContent = usuario.nombre_rol;
+                    fila.insertCell().textContent = usuario.curso || 'N/A';
+
+                    // Botón de eliminar
+                    const celdaAcciones = fila.insertCell();
+                    const btnEliminar = document.createElement('button');
+                    btnEliminar.textContent = 'Eliminar';
+                    btnEliminar.className = 'btn-eliminar';
+                    btnEliminar.onclick = () => eliminarUsuario(usuario.ID_usuario);
+                    celdaAcciones.appendChild(btnEliminar);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Hubo un error al cargar los usuarios');
+            }
+        }
+
+        // Función para eliminar un usuario
+        async function eliminarUsuario(id) {
+    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+        try {
+            const response = await fetch(`http://localhost:3000/user/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar el usuario');
+            }
+
+            const data = await response.json();
+            console.log('Respuesta del servidor:', data); // Log de depuración
+
+            alert(data.message); // Muestra un mensaje de éxito
+            cargarUsuarios(); // Recarga la lista de usuarios
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Hubo un error al eliminar el usuario. Por favor, inténtalo de nuevo.');
+        }
+    }
+}
+        // Cargar los usuarios al cargar la página
+        document.addEventListener("DOMContentLoaded", cargarUsuarios);
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            localStorage.removeItem('usuario'); 
+            window.location.href = 'matricularse.html'; 
+        }
+    </script>
+</body>
+</html>

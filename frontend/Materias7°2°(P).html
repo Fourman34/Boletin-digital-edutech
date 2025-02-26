@@ -1,252 +1,161 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    
-    <link rel="icon" href="logo.webp" />
+    <link rel="icon" href="imagenes/logo.webp" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materias</title>
     <link rel="stylesheet" href="index1.css">
+    <style>
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td[contenteditable="true"] {
+            background-color: #f9f9f9;
+        }
+
+        .aprobado {
+            background-color: #d4edda;
+        }
+
+        .reprobado {
+            background-color: #f8d7da;
+        }
+
+        /* Estilo para el botón de eliminar */
+        .eliminarFila {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .eliminarFila:hover {
+            background-color: #cc0000;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <img id="Logo" src="logo.webp" height="90" width="90" >
-        <h1> Colegio Provincial Dr. Ernesto Guevara</h1> 
-    </header> 
+        <img id="Logo" src="imagenes/logo.webp" height="90" width="90">
+        <h1>Colegio Provincial Dr. Ernesto Guevara</h1>
+    </header>
+    
     <nav>
         <ul>
             <li><a href="index1.html">Inicio</a></li>
-            <li><a href="calendario.html">calendario</a></li>
+            <li><a href="calendario.html">Calendario</a></li>
             <li><a href="contactar.html">Contacto</a></li>
-            <li><a href="matricularse.html">matricularse</a></li>
-            <li><a href="materias(A).html">Materias</a></li>          
+            <li><a href="matricularse.html">Matricularse</a></li>
+            <li id="materiasLink"><a href="#" id="materiasEnlace">Materias</a></li>
+            <li id="adminLink"><a href="administrador.html">Administradores</a></li>
         </ul>
-    </nav>  
+    </nav>
     <main>
-<h2> Bienvenido #usuario </h2>
+        <h2>Bienvenido <span id="nombreUsuario"></span></h2> <!-- Mostrar el nombre del usuario -->
 
-<table id="tablaNotas">
-	<tbody>
-		<tr>
-			<td colspan="3">alumno</td>
-			<td colspan="3">primer cuatrimestre</td>
-			<td colspan="3">segundo cuatrimestre</td>
-			<td>nota final</td>
-			<td>nota diciembre</td>
-			<td>nota febrero/marzo</td>
-		</tr>
-		<tr>
-			<td colspan="3"></td>
-			<td>1° informe</td>
-			<td>2° informe</td>
-			<td>nota</td>
-			<td>1° informe</td>
-			<td>2° informe</td>
-			<td>nota</td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
+    <!-- Campo oculto para el curso -->
+    <input type="hidden" id="curso" value="7°2"> <!-- Asegúrate de que el valor sea correcto -->
 
-		<tr>
-			<td colspan="3">ALVAREZ, Tamara Nicol</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">AQUINO, Ramiro Orel</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">ARMELLA, Axel Fernando</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">BARNES, Mariana Belén</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">ESCOBAR, Lautaro Julián</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">FERREIRA, Luz Milagros</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">GIMENEZ, Yamila</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">LEIVA, Juan</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">MIRANDA, Génesis Nicol</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">ORONÁ, Joaquín </td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">PAULETTO, Giovanni </td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">PERALTA, Alan Nicolás</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">SANTANA, Lautaro</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">TEDESCO, Franco</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-		<tr>
-			<td colspan="3">CABAÑAS, Nadia</td>
-			<td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-		</tr>
-	</tbody>
-</table>
+    <!-- Selector de alumnos -->
+    <div class="selector-alumno">
+        <label for="alumno">Selecciona un alumno:</label>
+        <select id="alumno">
+            <!-- Los alumnos se cargarán dinámicamente desde el backend -->
+        </select>
+    </div>
 
+    <!-- Selector de materias -->
+    <div class="selector-materia">
+        <label for="materia">Selecciona una materia:</label>
+        <select id="materia">
+            <!-- Las materias se cargarán dinámicamente desde el backend -->
+        </select>
+    </div>
+
+        <!-- Botón para agregar una nueva fila -->
+        <button id="agregarFila">Agregar Fila</button>
+
+        <!-- Tabla Dinámica -->
+        <table id="tablaNotas">
+            <thead>
+                <tr>
+                    <th colspan="3">Alumno</th>
+                    <th colspan="3">Primer Cuatrimestre</th>
+                    <th colspan="3">Segundo Cuatrimestre</th>
+                    <th>Nota Final</th>
+                    <th>Nota Diciembre</th>
+                    <th>Nota Febrero/Marzo</th>
+                    <th>Acciones</th> <!-- Nueva columna para el botón de eliminar -->
+                </tr>
+                <tr>
+                    <th colspan="3"></th>
+                    <th>1° Informe</th>
+                    <th>2° Informe</th>
+                    <th>Nota</th>
+                    <th>1° Informe</th>
+                    <th>2° Informe</th>
+                    <th>Nota</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th> <!-- Espacio para el botón de eliminar -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas de alumnos se llenarán dinámicamente desde el backend -->
+            </tbody>
+        </table>
+
+        <!-- Botones de Acción -->
         <button id="guardar">Guardar Notas</button>
-        <br>
-        <br>
-        <br>
-        <br>
-        <section id="home">
-
-        </section>
-        <br>
-        <br>
-        <br>
+        <button id="exportar">Exportar a CSV</button>
     </main>
-
+    <br>
+    <br>
+    <br>
+    <br>
     <footer>
-        <p>&copy; 2024 EduTech. Derechos Resevados.</p>
+        <p>&copy; 2024 EduTech. Derechos Reservados.</p>
     </footer>
-    <script src="notas7°2°.js"></script>
+    <button onclick="cerrarSesion()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Cerrar sesión
+    </button>
+
+    <script>
+        // Función para cargar el nombre del usuario desde localStorage
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+            if (usuario) {
+                document.getElementById('nombreUsuario').textContent = usuario.nombre;
+            } else {
+                alert("Debes iniciar sesión para acceder a esta página.");
+                window.location.href = 'index1.html'; // Redirigir a la página de inicio de sesión
+            }
+        });
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            localStorage.removeItem('usuario'); // Eliminar el usuario de localStorage
+            window.location.href = 'index1.html'; // Redirigir a la página de inicio de sesión
+        }
+    </script>
+    <script src="js/notas.js"></script>
 </body>
 </html>
