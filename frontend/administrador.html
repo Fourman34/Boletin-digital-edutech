@@ -59,19 +59,6 @@
         .btn-eliminar:hover {
             background-color: #cc0000;
         }
-
-        .btn-editar {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn-editar:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
@@ -150,13 +137,6 @@
                     btnEliminar.className = 'btn-eliminar';
                     btnEliminar.onclick = () => eliminarUsuario(usuario.ID_usuario);
                     celdaAcciones.appendChild(btnEliminar);
-
-                    // Botón de editar (opcional)
-                    const btnEditar = document.createElement('button');
-                    btnEditar.textContent = 'Editar';
-                    btnEditar.className = 'btn-editar';
-                    btnEditar.onclick = () => editarUsuario(usuario.ID_usuario);
-                    celdaAcciones.appendChild(btnEditar);
                 });
             } catch (error) {
                 console.error('Error:', error);
@@ -187,12 +167,6 @@
         }
     }
 }
-        // Función para editar un usuario (puedes implementarla según tus necesidades)
-        function editarUsuario(id) {
-            alert(`Editar usuario con ID: ${id}`);
-            // Aquí puedes redirigir a una página de edición o abrir un modal
-        }
-
         // Cargar los usuarios al cargar la página
         document.addEventListener("DOMContentLoaded", cargarUsuarios);
 

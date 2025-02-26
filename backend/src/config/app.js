@@ -20,10 +20,10 @@ app.use('/notas', notasRoutes); // Ruta para manejar notas
 
 // Ruta para obtener notas del alumno que inició sesión
 app.get("/obtener-notas", async (req, res) => {
-    const { ID_usuario, materia, curso } = req.query;
+    const { ID_usuario, materia } = req.query;
 
-    if (!ID_usuario || !curso) {
-        return res.status(400).json({ message: "ID_usuario y curso son requeridos." });
+    if (!ID_usuario) {
+        return res.status(400).json({ message: "ID_usuario es requerido." });
     }
 
     try {
@@ -31,16 +31,14 @@ app.get("/obtener-notas", async (req, res) => {
         let params;
 
         if (materia) {
-            query = "SELECT * FROM notas WHERE ID_usuario = ? AND materia = ? AND curso = ?";
-            params = [ID_usuario, materia, curso];
+            query = "SELECT * FROM notas WHERE ID_usuario = ? AND materia = ?";
+            params = [ID_usuario, materia];
         } else {
-            query = "SELECT * FROM notas WHERE ID_usuario = ? AND curso = ?";
-            params = [ID_usuario, curso];
+            query = "SELECT * FROM notas WHERE ID_usuario = ?";
+            params = [ID_usuario];
         }
 
         const [notas] = await database.query(query, params);
-
-        console.log("Notas encontradas:", notas); // Depuración
         res.status(200).json(notas);
     } catch (error) {
         console.error("Error al obtener las notas:", error);
@@ -62,11 +60,11 @@ app.post("/guardar-notas", async (req, res) => {
         for (const nota of notas) {
             const query = `
                 INSERT INTO notas (
-                    ID_usuario, materia, curso, fecha,
+                    ID_usuario, materia, fecha,
                     primer_cuatrimestre_1, primer_cuatrimestre_2, primer_cuatrimestre_nota,
                     segundo_cuatrimestre_1, segundo_cuatrimestre_2, segundo_cuatrimestre_nota,
                     nota_final, nota_diciembre, nota_febrero_marzo
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                     primer_cuatrimestre_1 = VALUES(primer_cuatrimestre_1),
                     primer_cuatrimestre_2 = VALUES(primer_cuatrimestre_2),
@@ -84,7 +82,6 @@ app.post("/guardar-notas", async (req, res) => {
             await database.query(query, [
                 nota.ID_usuario,
                 nota.materia,
-                nota.curso,
                 fecha,
                 nota.primer_cuatrimestre_1,
                 nota.primer_cuatrimestre_2,
@@ -109,15 +106,15 @@ app.post("/guardar-notas", async (req, res) => {
 
 // Ruta para eliminar notas
 app.delete("/eliminar-notas", async (req, res) => {
-    const { ID_usuario, materia, curso } = req.body;
+    const { ID_usuario, materia } = req.body;
 
-    if (!ID_usuario || !materia || !curso) {
-        return res.status(400).json({ message: "ID_usuario, materia y curso son requeridos." });
+    if (!ID_usuario || !materia) {
+        return res.status(400).json({ message: "ID_usuario y materia son requeridos." });
     }
 
     try {
-        const query = "DELETE FROM notas WHERE ID_usuario = ? AND materia = ? AND curso = ?";
-        await database.query(query, [ID_usuario, materia, curso]);
+        const query = "DELETE FROM notas WHERE ID_usuario = ? AND materia = ?";
+        await database.query(query, [ID_usuario, materia]);
         res.status(200).json({ message: "Notas eliminadas correctamente." });
     } catch (error) {
         console.error("Error al eliminar las notas:", error);
@@ -136,18 +133,13 @@ app.get("/obtener-materias", async (req, res) => {
     try {
         const query = "SELECT * FROM materias WHERE curso = ?";
         const [materias] = await database.query(query, [curso]);
-        console.log("Materias encontradas para el curso", curso, ":", materias); // Depuración
-
-        if (materias.length === 0) {
-            console.log("No se encontraron materias para el curso:", curso); // Depuración
-        }
-
         res.status(200).json(materias);
     } catch (error) {
         console.error("Error al obtener las materias:", error);
         res.status(500).json({ message: "Error al obtener las materias." });
     }
 });
+
 // Ruta para obtener alumnos por curso
 app.get("/obtener-alumnos", async (req, res) => {
     const { curso } = req.query;

@@ -139,21 +139,25 @@
                     adminLink.style.display = 'none'; // Ocultar el enlace para otros roles
                 }
 
-                // Cargar las materias
-                cargarMaterias();
+                // Obtener el curso del usuario
+                const curso = usuario.curso;
+                console.log("Curso del alumno:", curso); // Depuración
+
+                // Cargar las materias del curso del alumno
+                cargarMaterias(curso);
 
                 // Cargar las notas del alumno cuando se selecciona una materia
                 const selectorMateria = document.getElementById("materia");
                 selectorMateria.addEventListener("change", () => {
-                    cargarNotasDelAlumno(usuario.ID_usuario);
+                    cargarNotasDelAlumno(usuario.ID_usuario, curso);
                 });
             }
         });
 
         // Función para cargar las materias desde el servidor
-        async function cargarMaterias() {
+        async function cargarMaterias(curso) {
             try {
-                const response = await fetch("http://localhost:3000/obtener-materias");
+                const response = await fetch(`http://localhost:3000/obtener-materias?curso=${curso}`);
                 if (response.ok) {
                     const materias = await response.json();
                     const selectorMateria = document.getElementById("materia");
@@ -169,7 +173,7 @@
         }
 
         // Función para cargar las notas del alumno
-        async function cargarNotasDelAlumno(ID_usuario) {
+        async function cargarNotasDelAlumno(ID_usuario, curso) {
             const selectorMateria = document.getElementById("materia");
             const materia = selectorMateria.value; // Obtener la materia seleccionada
 
@@ -181,8 +185,9 @@
             try {
                 console.log("ID_usuario:", ID_usuario); // Depuración
                 console.log("Materia seleccionada:", materia); // Depuración
+                console.log("Curso del alumno:", curso); // Depuración
 
-                const response = await fetch(`http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&materia=${materia}`);
+                const response = await fetch(`http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&materia=${materia}&curso=${curso}`);
                 
                 if (response.ok) {
                     const notas = await response.json();

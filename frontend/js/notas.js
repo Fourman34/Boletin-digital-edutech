@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({ ID_usuario, materia, curso }),
+                        body: JSON.stringify({ ID_usuario, materia }),
                     });
 
                     if (response.ok) {
@@ -155,24 +155,24 @@ document.addEventListener("DOMContentLoaded", function () {
     async function cargarNotas() {
         const ID_usuario = selectorAlumno.value; // Obtener el ID_usuario del alumno seleccionado
         const materia = selectorMateria ? selectorMateria.value : null; // Obtener la materia seleccionada si existe
-
+    
         if (!ID_usuario) {
             alert("Por favor, selecciona un alumno.");
             return;
         }
-
+    
         try {
             console.log("Enviando solicitud para obtener notas...");
             const url = materia 
-                ? `http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&materia=${materia}&curso=${curso}`
-                : `http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&curso=${curso}`;
-
+                ? `http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}&materia=${materia}`
+                : `http://localhost:3000/obtener-notas?ID_usuario=${ID_usuario}`;
+    
             const response = await fetch(url);
-
+    
             if (!response.ok) {
                 throw new Error(`Error en la respuesta del servidor: ${response.statusText}`);
             }
-
+    
             const notas = await response.json();
             console.log("Notas obtenidas:", notas);
             actualizarTablaConNotas(notas); // Actualizar la tabla con las notas obtenidas
@@ -240,7 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const filaNotas = {
                 ID_usuario: ID_usuario,
                 materia: materia, // Usar la materia seleccionada si existe
-                curso: curso, // Incluir el curso en la nota
                 primer_cuatrimestre_1: convertirValor(celdas[0].textContent.trim()),
                 primer_cuatrimestre_2: convertirValor(celdas[1].textContent.trim()),
                 primer_cuatrimestre_nota: convertirValor(celdas[2].textContent.trim()),
@@ -263,27 +262,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Función para enviar notas al servidor
-    async function enviarNotasAlServidor(notas) {
-        try {
-            const response = await fetch("http://localhost:3000/guardar-notas", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(notas),
-            });
+async function enviarNotasAlServidor(notas) {
+    try {
+        const response = await fetch("http://localhost:3000/guardar-notas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(notas),
+        });
 
-            if (response.ok) {
-                return "éxito";
-            } else {
-                throw new Error(`Error al enviar las notas: ${response.statusText}`);
-            }
-        } catch (error) {
-            console.error("Error al enviar las notas:", error);
-            return "error";
+        if (response.ok) {
+            return "éxito";
+        } else {
+            throw new Error(`Error al enviar las notas: ${response.statusText}`);
         }
+    } catch (error) {
+        console.error("Error al enviar las notas:", error);
+        return "error";
     }
-
+}
     // Función para exportar notas a CSV
     function exportarACSV() {
         const filas = tabla.querySelectorAll("tbody tr");
