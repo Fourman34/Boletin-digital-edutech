@@ -8,38 +8,6 @@
     <link rel="stylesheet" href="index1.css">
 </head>
 <body>
-    <script>
-        // Verificar si el usuario NO está autenticado
-        const usuarioString = localStorage.getItem('usuario');
-        if (!usuarioString) {
-            console.log('Usuario no autenticado, redirigiendo a matricularse.html'); // Depuración
-            window.location.href = 'matricularse.html';
-        } else {
-            try {
-                const usuario = JSON.parse(usuarioString);
-                if (usuario && usuario.ID_usuario) { // Verificar que el usuario tenga un ID válido
-                    console.log('Usuario autenticado, mostrando información'); // Depuración
-                    document.getElementById('userName').textContent = usuario.nombre;
-                    document.getElementById('userRole').textContent = usuario.rol;
-                } else {
-                    console.log('Usuario no válido, redirigiendo a matricularse.html'); // Depuración
-                    localStorage.removeItem('usuario'); // Borrar el usuario inválido
-                    window.location.href = 'matricularse.html';
-                }
-            } catch (error) {
-                console.error('Error al parsear el usuario:', error);
-                localStorage.removeItem('usuario'); // Borrar el usuario si hay un error
-                window.location.href = 'matricularse.html'; // Redirigir si hay un error
-            }
-        }
-    
-        // Cerrar sesión al hacer clic en el botón "Cerrar sesión"
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('usuario');  // Eliminar el dato de usuario
-            window.location.href = 'matricularse.html';  // Redirigir a la página de inicio de sesión
-        });
-    </script>
-
     <header>
         <img id="Logo" src="imagenes/logo.webp" height="90" width="90" alt="Logo del Colegio Provincial Dr. Ernesto Guevara">
         <h1>Colegio Provincial Dr. Ernesto Guevara</h1>
@@ -55,6 +23,7 @@
             <li id="adminLink"><a href="administrador.html">Administradores</a></li>
         </ul>
     </nav>
+
     <main>
         <section class="success-message">
             <h2>¡Inicio de sesión exitoso!</h2>
@@ -66,76 +35,63 @@
     </main>
 
     <footer>
-        
         <p>&copy; 2024 EduTech. Todos los derechos reservados.</p>
     </footer>
-<<<<<<< HEAD
-=======
+
     <button onclick="cerrarSesion()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
         Cerrar sesión
     </button>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const materiasLink = document.getElementById('materiasLink');
-
-            const usuario = JSON.parse(localStorage.getItem('usuario'));
-
-            if (!usuario) {
-                materiasLink.style.display = 'none';
-            } else {
-                materiasLink.style.display = 'block';
-            }
-        });
-
+        // Función para cerrar sesión
         function cerrarSesion() {
-            localStorage.removeItem('usuario'); 
-            window.location.href = 'matricularse.html'; 
+            localStorage.removeItem("usuario");
+            window.location.href = "matricularse.html";
         }
-    </script>
 
-    <script>
-        // Verificar si hay un usuario en el localStorage
-        const usuarioString = localStorage.getItem('usuario');
-        console.log('Contenido del localStorage (usuario):', usuarioString); // Depuración
+        // Verificar si el usuario está autenticado y mostrar su información
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioString = localStorage.getItem("usuario");
+            const userNameElement = document.getElementById("userName");
+            const userRoleElement = document.getElementById("userRole");
+            const logoutBtnElement = document.getElementById("logoutBtn");
+            const materiasLink = document.getElementById("materiasLink");
 
-        // Obtener referencias a los elementos del DOM
-        const userNameElement = document.getElementById('userName');
-        const userRoleElement = document.getElementById('userRole');
-        const logoutBtnElement = document.getElementById('logoutBtn');
-
-        if (userNameElement && userRoleElement && logoutBtnElement) {
-            if (usuarioString) {
+            if (!usuarioString) {
+                console.log("Usuario no autenticado, redirigiendo a matricularse.html"); // Depuración
+                window.location.href = "matricularse.html";
+            } else {
                 try {
                     const usuario = JSON.parse(usuarioString);
-                    console.log('Usuario parseado:', usuario); // Depuración
-
                     if (usuario && usuario.ID_usuario) { // Verificar que el usuario tenga un ID válido
-                        console.log('Mostrando información del usuario...'); // Depuración
+                        console.log("Usuario autenticado, mostrando información"); // Depuración
                         userNameElement.textContent = usuario.nombre;
                         userRoleElement.textContent = usuario.rol;
+
+                        // Mostrar u ocultar el enlace de "Materias" según el rol del usuario
+                        if (materiasLink) {
+                            materiasLink.style.display = "block";
+                        }
                     } else {
-                        console.log('Usuario no válido en localStorage.'); // Depuración
+                        console.log("Usuario no válido, redirigiendo a matricularse.html"); // Depuración
+                        localStorage.removeItem("usuario"); // Borrar el usuario inválido
+                        window.location.href = "matricularse.html";
                     }
                 } catch (error) {
-                    console.error('Error al parsear el usuario:', error); // Depuración
+                    console.error("Error al parsear el usuario:", error);
+                    localStorage.removeItem("usuario"); // Borrar el usuario si hay un error
+                    window.location.href = "matricularse.html"; // Redirigir si hay un error
                 }
-            } else {
-                console.log('No hay usuario en localStorage.'); // Depuración
             }
 
             // Cerrar sesión al hacer clic en el botón "Cerrar sesión"
-            logoutBtnElement.addEventListener('click', () => {
-                console.log('Cerrar sesión clickeado'); // Depuración
-                localStorage.removeItem('usuario');  // Eliminar el dato de usuario
-                window.location.href = 'matricularse.html';  // Redirigir a la página de inicio de sesión
-            });
-        } else {
-            console.error('No se encontraron los elementos en el DOM.'); // Depuración
-        }
+            if (logoutBtnElement) {
+                logoutBtnElement.addEventListener("click", cerrarSesion);
+            }
+        });
     </script>
+
     <script src="js/materiasEnlace.js"></script>
     <script src="js/matricularse.js"></script>
->>>>>>> Corrigiendo-probando
 </body>
 </html>
